@@ -1,0 +1,715 @@
+---
+openapi: 3.0.3
+info:
+  title: car_rental_backend API
+  version: 1.0-SNAPSHOT
+paths:
+  /bookings/all:
+    get:
+      tags:
+      - Booking Endpoint
+      responses:
+        "200":
+          description: List of bookings found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /bookings/car/{carId}:
+    get:
+      tags:
+      - Booking Endpoint
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of bookings found for a car
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /bookings/create:
+    post:
+      tags:
+      - Booking Endpoint
+      parameters:
+      - name: carId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: userId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /bookings/get/{id}:
+    get:
+      tags:
+      - Booking Endpoint
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Booking found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        "404":
+          description: Booking not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /bookings/update:
+    put:
+      tags:
+      - Booking Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /bookings/user/{userId}:
+    get:
+      tags:
+      - Booking Endpoint
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of bookings found for an user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /bookings/{id}:
+    delete:
+      tags:
+      - Booking Endpoint
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /cars/all:
+    get:
+      tags:
+      - Car Endpoint
+      responses:
+        "200":
+          description: List of cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+  /cars/create:
+    post:
+      tags:
+      - Car Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /cars/delete/{id}:
+    delete:
+      tags:
+      - Car Endpoint
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /cars/get/{id}:
+    get:
+      tags:
+      - Car Endpoint
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Car found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+  /cars/update:
+    put:
+      tags:
+      - Car Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /ratings/all:
+    get:
+      tags:
+      - Rating Endpoint
+      responses:
+        "200":
+          description: List of ratings found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rating'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /ratings/car/{carId}:
+    get:
+      tags:
+      - Rating Endpoint
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of ratings found for a car
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rating'
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /ratings/create:
+    post:
+      tags:
+      - Rating Endpoint
+      parameters:
+      - name: bookingId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: carId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: userId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /ratings/get/{id}:
+    get:
+      tags:
+      - Rating Endpoint
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Rating found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        "404":
+          description: Rating not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /ratings/update:
+    put:
+      tags:
+      - Rating Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /ratings/user/{userId}:
+    get:
+      tags:
+      - Rating Endpoint
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of ratings found for an user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rating'
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /ratings/{id}:
+    delete:
+      tags:
+      - Rating Endpoint
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /user/login:
+    post:
+      tags:
+      - User Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: Login successful!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "401":
+          description: Unauthorized
+          content:
+            text/plain: {}
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+  /user/signUp:
+    post:
+      tags:
+      - User Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: Login successful
+          content:
+            text/plain: {}
+        "409":
+          description: This username already exists!
+          content:
+            text/plain: {}
+components:
+  schemas:
+    Booking:
+      required:
+      - startDate
+      - endDate
+      - timeStamp
+      - bookingStatus
+      - total
+      - car
+      - user
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        startDate:
+          $ref: '#/components/schemas/Date'
+        endDate:
+          $ref: '#/components/schemas/Date'
+        timeStamp:
+          $ref: '#/components/schemas/Date'
+        bookingStatus:
+          $ref: '#/components/schemas/BookingStatus'
+        total:
+          format: float
+          type: number
+        rating:
+          $ref: '#/components/schemas/Rating'
+        car:
+          $ref: '#/components/schemas/Car'
+        user:
+          $ref: '#/components/schemas/User'
+    BookingStatus:
+      enum:
+      - PENDING
+      - ACTIVE
+      - COMPLETED
+      - CANCELED
+      type: string
+    Brand:
+      enum:
+      - ALFA_ROMEO
+      - AUDI
+      - BMW
+      - BUGATTI
+      - FERRARI
+      - FIAT
+      - FORD
+      - MERCEDES_BENZ
+      - TOYOTA
+      - VOLKSWAGEN
+      type: string
+    Car:
+      required:
+      - model
+      - brand
+      - engine
+      - fuelType
+      - doors
+      - color
+      - transmission
+      - seats
+      - year
+      - licencePlate
+      - price
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        model:
+          type: string
+        brand:
+          $ref: '#/components/schemas/Brand'
+        engine:
+          type: string
+        fuelType:
+          $ref: '#/components/schemas/FuelType'
+        doors:
+          format: int32
+          type: integer
+        color:
+          $ref: '#/components/schemas/Color'
+        transmission:
+          $ref: '#/components/schemas/Transmission'
+        seats:
+          format: int32
+          type: integer
+        year:
+          format: int32
+          type: integer
+        licencePlate:
+          type: string
+        price:
+          format: double
+          type: number
+        averageRating:
+          format: double
+          type: number
+        reviewsCount:
+          format: int32
+          type: integer
+    Color:
+      enum:
+      - BEIGE
+      - BLACK
+      - CHROME
+      - GRAY
+      - GREEN
+      - RED
+      - YELLOW
+      - WHITE
+      type: string
+    Date:
+      format: date
+      type: string
+      example: 2022-03-10
+    FuelType:
+      enum:
+      - ELECTRIC
+      - GAS
+      - GASOLINE
+      - GASOLINE_GAS
+      - PETROL
+      type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    Rating:
+      required:
+      - rating
+      - timeStamp
+      - car
+      - user
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        rating:
+          format: int32
+          type: integer
+        comment:
+          type: string
+        timeStamp:
+          $ref: '#/components/schemas/Date'
+        car:
+          $ref: '#/components/schemas/Car'
+        user:
+          $ref: '#/components/schemas/User'
+    Role:
+      enum:
+      - ADMIN
+      - USER
+      type: string
+    Transmission:
+      enum:
+      - MANUAL
+      - AUTOMATIC
+      type: string
+    User:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: bearer
+      bearerFormat: JWT

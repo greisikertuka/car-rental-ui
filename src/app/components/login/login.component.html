@@ -1,1 +1,16 @@
-<p>login works!</p>
+<div class="container p-4 bg-secondary">
+  <form class="login-form" (ngSubmit)="login()">
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput placeholder="Enter your username" [(ngModel)]="username" name="username" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" placeholder="Enter your password" [(ngModel)]="password" name="password" required>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" type="submit">Login</button>
+  </form>
+</div>
+

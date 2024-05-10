@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Car, CarEndpointService} from "../../generated-code";
+import {Car} from "../../generated-code";
+import {CarRentalApi} from "../../service/car-rental-api.service";
 
 @Component({
   selector: 'app-home',
@@ -9,23 +10,19 @@ import {Car, CarEndpointService} from "../../generated-code";
 export class HomeComponent implements OnInit, OnDestroy {
   cars?: Car[];
 
-  constructor(private carEndpointService: CarEndpointService) {
+  constructor(private carRentalApi: CarRentalApi) {
   }
 
   ngOnInit(): void {
-    this.getCars()
-  }
-
-  ngOnDestroy(): void {
-  }
-
-  getCars() {
-    this.carEndpointService.carsAllGet().subscribe(
+    this.carRentalApi.carEndpointService.carsAllGet().subscribe(
       (response: Car[]) =>
         this.cars = response,
       error =>
         console.error('Error getting cars', error)
     )
+  }
+
+  ngOnDestroy(): void {
   }
 
 

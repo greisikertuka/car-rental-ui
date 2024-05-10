@@ -1,0 +1,13 @@
+export * from './booking-endpoint.service';
+import { BookingEndpointService } from './booking-endpoint.service';
+export * from './booking-endpoint.serviceInterface';
+export * from './car-endpoint.service';
+import { CarEndpointService } from './car-endpoint.service';
+export * from './car-endpoint.serviceInterface';
+export * from './rating-endpoint.service';
+import { RatingEndpointService } from './rating-endpoint.service';
+export * from './rating-endpoint.serviceInterface';
+export * from './user-endpoint.service';
+import { UserEndpointService } from './user-endpoint.service';
+export * from './user-endpoint.serviceInterface';
+export const APIS = [BookingEndpointService, CarEndpointService, RatingEndpointService, UserEndpointService];

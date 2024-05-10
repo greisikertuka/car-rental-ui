@@ -1,1 +1,26 @@
-<p>car-details works!</p>
+<div class="container p-4 bg-secondary">
+<h1>Car Details</h1>
+<div class="card border-dark shadow">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-2">
+        <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+        <p class="card-text">Engine: {{ car.engine }}</p>
+        <p class="card-text">Fuel Type: {{ car.fuelType }}</p>
+        <p class="card-text">Doors: {{ car.doors }}</p>
+        <p class="card-text">Color: {{ car.color }}</p>
+        <p class="card-text">Transmission: {{ car.transmission }}</p>
+        <p class="card-text">Seats: {{ car.seats }}</p>
+        <p class="card-text">Year: {{ car.year }}</p>
+        <p class="card-text">License Plate: {{ car.licencePlate }}</p>
+        <p class="card-text">Price: ${{ car.price }}</p>
+      </div>
+      <div class="col-md-2">
+        <img ngSrc="assets/images/car.png" alt="Car {{car.brand + ' ' + car.model}}" width="400" height="400"
+             class="img-fluid">
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-dark mt-3" (click)="goToRentPage()">Rent</button>
+</div>
