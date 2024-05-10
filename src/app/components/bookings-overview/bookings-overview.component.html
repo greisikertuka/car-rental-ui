@@ -1,1 +1,11 @@
-<div class="container bg-secondary"></div>
+<div class="container bg-secondary">
+  <cdk-accordion class="example-accordion">
+    <div *ngFor="let booking of bookings"
+         class="my-2 p-3 border border-light">
+      <app-booking
+        [booking]=booking
+        [index]=bookings.indexOf(booking)></app-booking>
+    </div>
+  </cdk-accordion>
+
+</div>

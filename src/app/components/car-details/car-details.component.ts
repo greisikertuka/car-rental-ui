@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Car} from "../../generated-code";
 import {CarRentalApi} from "../../service/car-rental-api.service";
+import {RoutesPath} from "../../shared/routes";
 
 @Component({
   selector: 'app-car-details',
@@ -29,6 +30,6 @@ export class CarDetailsComponent implements OnInit {
 
   goToRentPage() {
     const queryParams: Params = this.car.id ? {carId: this.car.id?.toString()} : {};
-    this.router.navigate(['/rent'], {queryParams: queryParams});
+    this.router.navigate([RoutesPath.rent], {queryParams: queryParams});
   }
 }

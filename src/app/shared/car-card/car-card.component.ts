@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Car} from "../../generated-code";
 import {Params, Router} from '@angular/router';
+import {RoutesPath} from "../routes";
 
 @Component({
   selector: 'app-car-card',
@@ -15,6 +16,6 @@ export class CarCardComponent {
 
   goToCarDetails() {
     const queryParams: Params = this.car.id ? {carId: this.car.id?.toString()} : {};
-    this.router.navigate(['/car-details'], {queryParams: queryParams});
+    this.router.navigate([RoutesPath.carDetails], {queryParams: queryParams});
   }
 }

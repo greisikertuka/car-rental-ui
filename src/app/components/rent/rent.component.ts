@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {BookingStatus, Car, User} from "../../generated-code";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CarRentalApi} from "../../service/car-rental-api.service";
 import {AuthService} from "../../authentication/auth.service";
-import {BookingService} from "./bookingservice";
+import {RentCar} from "../../api-client/endpoint/rent/rent-car";
+import {RoutesPath} from "../../shared/routes";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-rent',
@@ -11,7 +13,13 @@ import {BookingService} from "./bookingservice";
   styleUrls: ['./rent.component.scss']
 })
 export class RentComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private carRentalApi: CarRentalApi, private authService: AuthService, private bookingService: BookingService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private carRentalApi: CarRentalApi,
+    private authService: AuthService,
+    private bookingService: RentCar,
+    private snackBar: MatSnackBar) {
   }
 
   carId!: number;
@@ -39,16 +47,6 @@ export class RentComponent implements OnInit {
   }
 
   rentCar(): void {
-    console.log(this.user);
-    console.log({
-      startDate: this.startDate,
-      endDate: this.endDate,
-      timeStamp: Date.now().toString(),
-      bookingStatus: BookingStatus.Pending,
-      total: this.car.price * (this.endDate - this.startDate),
-      car: this.car,
-      user: this.user
-    });
     this.bookingService.createBooking(this.carId, this.userId, {
       startDate: Date.now().toString(),
       endDate: Date.now().toString(),
@@ -60,12 +58,15 @@ export class RentComponent implements OnInit {
     })
       .subscribe(
         response => {
-          // Handle successful response
-          console.log('Booking created successfully:', response);
+          this.snackBar.open(`Successfully rented car for ${this.endDate - this.startDate} days`, 'Close', {
+            duration: 1500,
+          });
+          this.router.navigate([RoutesPath.bookingsOverview]);
         },
         error => {
-          // Handle error response
-          console.error('Error creating booking:', error);
+          this.snackBar.open(`Error while renting car!`, 'Close', {
+            duration: 1500,
+          });
         }
       );
   }

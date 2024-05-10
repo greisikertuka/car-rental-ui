@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AuthService} from "../../authentication/auth.service";
 import {CarRentalApi} from "../../service/car-rental-api.service";
 import {LoginRequest} from "../../generated-code";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,9 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private carRentalApi: CarRentalApi) {
+  constructor(private authService: AuthService,
+              private carRentalApi: CarRentalApi,
+              private snackBar: MatSnackBar) {
   }
 
   login(): void {
@@ -26,10 +29,15 @@ export class LoginComponent {
         this.token = response.token;
         if (this.token) {
           this.authService.login(this.token);
+          this.snackBar.open(`Successfully logged in!`, 'Close', {
+            duration: 1500,
+          });
         }
       },
-      error =>
-        console.error('Error logging in', error)
+      () =>
+        this.snackBar.open(`Error logging in!`, 'Close', {
+          duration: 1500,
+        })
     );
   }
 

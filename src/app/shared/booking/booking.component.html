@@ -1,0 +1,26 @@
+<cdk-accordion-item
+  #accordionItem="cdkAccordionItem"
+  role="button"
+  tabindex="0"
+  [attr.id]="'accordion-header-' + index"
+  [attr.aria-expanded]="accordionItem.expanded"
+  [attr.aria-controls]="'accordion-body-' + index">
+  <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+    {{ booking.car.brand + ' ' + booking.car.model }}
+    <span class="example-accordion-item-description">
+          Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+        </span>
+  </div>
+  <div
+    class="example-accordion-item-body"
+    role="region"
+    [style.display]="accordionItem.expanded ? '' : 'none'"
+    [attr.id]="'accordion-body-' + index"
+    [attr.aria-labelledby]="'accordion-header-' + index">
+    {{ booking.car.brand.toString() + ' ' + booking.car.model }} was rented from {{ booking.startDate }}
+    to {{ booking.endDate }}
+    <span *ngIf="booking.rating">
+      You left a rating of {{ booking.rating.rating }} stars and commented {{ booking.rating.comment }}
+    </span>
+  </div>
+</cdk-accordion-item>

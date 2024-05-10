@@ -28,6 +28,12 @@ import {MatListModule} from '@angular/material/list';
 import {AdminDashboardComponent} from './components/admin-dashboard/admin-dashboard.component';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
 import {FormsModule} from "@angular/forms";
+import {MatCardModule} from "@angular/material/card";
+import {MatLineModule} from "@angular/material/core";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { BookingComponent } from './shared/booking/booking.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {CdkAccordionModule} from "@angular/cdk/accordion";
 
 
 @NgModule({
@@ -44,7 +50,8 @@ import {FormsModule} from "@angular/forms";
     AppNavbarComponent,
     AppNavbarComponent,
     AdminDashboardComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    BookingComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +69,12 @@ import {FormsModule} from "@angular/forms";
     MatListModule,
     FormsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatCardModule,
+    MatLineModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    CdkAccordionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

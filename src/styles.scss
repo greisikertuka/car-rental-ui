@@ -17,5 +17,11 @@ $my-theme: mat.define-dark-theme((
 @include mat.core();
 @include mat.all-component-themes($my-theme);
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
