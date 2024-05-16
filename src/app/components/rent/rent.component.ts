@@ -3,14 +3,17 @@ import {BookingStatus, Car, User} from "../../generated-code";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CarRentalApi} from "../../service/car-rental-api.service";
 import {AuthService} from "../../authentication/auth.service";
-import {RentCar} from "../../api-client/endpoint/rent/rent-car";
+import {BookingEndpoint} from "../../api-client/endpoint/rent/booking-endpoint.service";
 import {RoutesPath} from "../../shared/routes";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AppColors} from "../../shared/colors";
+import {formWidth} from "../../shared/helpers";
 
 @Component({
   selector: 'app-rent',
   templateUrl: './rent.component.html',
-  styleUrls: ['./rent.component.scss']
+  styleUrls: ['./rent.component.scss'],
 })
 export class RentComponent implements OnInit {
   constructor(
@@ -18,16 +21,28 @@ export class RentComponent implements OnInit {
     private router: Router,
     private carRentalApi: CarRentalApi,
     private authService: AuthService,
-    private bookingService: RentCar,
+    private bookingService: BookingEndpoint,
     private snackBar: MatSnackBar) {
+    this.rentForm = new FormGroup({
+      dateRange: new FormGroup({
+        start: new FormControl<Date | null>(null, Validators.required),
+        end: new FormControl<Date | null>(null, Validators.required),
+      }),
+      name: new FormControl<String>('', Validators.required),
+      lastName: new FormControl<String>('', Validators.required),
+      email: new FormControl<String>('', [Validators.required, Validators.email]),
+      phone: new FormControl<String>('', Validators.required),
+    });
   }
 
   carId!: number;
   userId!: number;
-  startDate: number = Date.now();
-  endDate: number = Date.now();
   car!: Car;
   user!: User;
+  rentForm: FormGroup;
+
+  protected readonly AppColors = AppColors;
+  protected readonly formWidth = formWidth;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -42,32 +57,45 @@ export class RentComponent implements OnInit {
       (response: Car) =>
         this.car = response,
       error =>
-        console.error('Error getting car details', error)
+        this.snackBar.open('Error while getting car!', 'Close', {
+          duration: 1500,
+          panelClass: ["error-snackbar"]
+        })
     )
   }
 
   rentCar(): void {
+    const formValue = this.rentForm.value['dateRange'];
+    const daysDifference = Math.floor((formValue.end.getTime() - formValue.start.getTime()) / (1000 * 60 * 60 * 24));
+    const total = this.car.price * daysDifference;
     this.bookingService.createBooking(this.carId, this.userId, {
-      startDate: Date.now().toString(),
-      endDate: Date.now().toString(),
+      name: this.rentForm.value['name'],
+      lastName: this.rentForm.value['lastName'],
+      email: this.rentForm.value['email'],
+      phone: this.rentForm.value['phone'],
+      startDate: formValue.start.getTime().toString(),
+      endDate: formValue.end.getTime().toString(),
       timeStamp: Date.now().toString(),
       bookingStatus: BookingStatus.Pending,
-      total: 50,
+      total: total,
       car: this.car,
       user: this.user
     })
       .subscribe(
-        response => {
-          this.snackBar.open(`Successfully rented car for ${this.endDate - this.startDate} days`, 'Close', {
+        () => {
+          this.snackBar.open(`Successfully rented car for ${daysDifference} days!`, 'Close', {
             duration: 1500,
+            panelClass: ["success-snackbar"]
           });
           this.router.navigate([RoutesPath.bookingsOverview]);
         },
-        error => {
+        () => {
           this.snackBar.open(`Error while renting car!`, 'Close', {
             duration: 1500,
+            panelClass: ["error-snackbar"]
           });
         }
       );
   }
+
 }

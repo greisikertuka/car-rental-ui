@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Booking} from "../../../generated-code";
 import {AuthService} from "../../../authentication/auth.service";
+import {Booking} from "../../../generated-code";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookingsOverview {
+export class BookingEndpoint {
   private baseUrl = 'http://localhost:8081/bookings';
   private tokenSubject: BehaviorSubject<string | null>;
 
@@ -16,6 +16,16 @@ export class BookingsOverview {
     this.authService.tokenSubject$.subscribe(
       token => this.tokenSubject.next(token)
     );
+  }
+
+  createBooking(carId: number, userId: number, booking: Booking): Observable<any> {
+    const url = `${this.baseUrl}/create?carId=${carId}&userId=${userId}`;
+    return this.http.post<any>(url, booking, this.getHttpOptions());
+  }
+
+  updateBooking(booking: Booking): Observable<any> {
+    const url = `${this.baseUrl}/update`;
+    return this.http.put<any>(url, booking, this.getHttpOptions());
   }
 
   getBookingsByUserId(userId: number): Observable<Booking[]> {

@@ -1,7 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Booking, User} from "../../generated-code";
-import {BookingsOverview} from "../../api-client/endpoint/rent/bookings-overview";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Booking, BookingStatus, User} from "../../generated-code";
 import {AuthService} from "../../authentication/auth.service";
+import {AppColors} from "../../shared/colors";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort, Sort} from "@angular/material/sort";
+import {LiveAnnouncer} from "@angular/cdk/a11y";
+import {MatDialog} from "@angular/material/dialog";
+import {ViewRatingDialogComponent} from "./view-rating/view-rating-dialog.component";
+import {AddRatingComponent} from "./add-rating/add-rating.component";
+import {AddRating} from "../../api-client/endpoint/rating/add-rating";
+import {BookingEndpoint} from "../../api-client/endpoint/rent/booking-endpoint.service";
+import {convertToCamelCase} from "../../shared/helpers";
+import {ChangeStatusComponent} from "./change-status/change-status.component";
 
 @Component({
   selector: 'app-bookings-overview',
@@ -11,8 +23,18 @@ import {AuthService} from "../../authentication/auth.service";
 export class BookingsOverviewComponent implements OnInit {
   bookings: Booking[] = [];
   user!: User;
+  dataSource: MatTableDataSource<Booking> = new MatTableDataSource();
 
-  constructor(private bookingService: BookingsOverview, private authService: AuthService) {
+  displayedColumns: string[] = ['car', 'total', 'bookingStatus', 'fullName', 'email', 'phone', 'startDate', 'endDate', 'timeStamp', 'actions'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(private authService: AuthService,
+              private snackBar: MatSnackBar,
+              private _liveAnnouncer: LiveAnnouncer,
+              public dialog: MatDialog,
+              private addRatingEndpoint: AddRating,
+              private rentCarEndpoint: BookingEndpoint) {
   }
 
   ngOnInit(): void {
@@ -23,13 +45,106 @@ export class BookingsOverviewComponent implements OnInit {
   }
 
   fetchBookings() {
-    this.bookingService.getBookingsByUserId(this.user.id!).subscribe(
+    this.rentCarEndpoint.getBookingsByUserId(this.user.id!).subscribe(
       (response: Booking[]) => {
         this.bookings = response;
+        this.dataSource = new MatTableDataSource<Booking>(this.bookings);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
-      error => {
-        console.error('Error fetching bookings:', error);
+      () => {
+        this.snackBar.open('Error while getting bookings!', 'Close', {
+          duration: 1500,
+          panelClass: ["error-snackbar"]
+        })
       }
     );
   }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  openViewRatingDialog(booking: Booking): void {
+    this.dialog.open(ViewRatingDialogComponent, {
+      width: '350px',
+      height: '350px',
+      data: {title: 'View Rating', booking: booking}
+    });
+  }
+
+  openAddRatingDialog(booking: Booking): void {
+    const dialogRef = this.dialog.open(AddRatingComponent, {
+      width: '400px',
+      height: '450px',
+      data: {title: 'Add Rating', booking: booking}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addRatingEndpoint.addRating(result.car.id, result.user.id, booking.id!, result).subscribe(
+          () => {
+            this.snackBar.open('The review was added successfully!', 'Close', {
+              duration: 1500,
+              panelClass: ["success-snackbar"]
+            });
+            this.fetchBookings();
+          },
+          error => this.snackBar.open('There was an error when adding the review!', 'Close', {
+            duration: 1500,
+            panelClass: ["error-snackbar"]
+          })
+        );
+      }
+    });
+  }
+
+  openChangeStatusDialog(booking: Booking): void {
+    const dialogRef = this.dialog.open(ChangeStatusComponent, {
+      width: '300px',
+      height: '200px',
+      data: {title: 'Are you sure you want to cancel this booking?', booking: booking}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        let canceledBooking: Booking = {
+          bookingStatus: BookingStatus.Canceled,
+          email: booking.email,
+          endDate: booking.endDate,
+          lastName: booking.lastName,
+          name: booking.name,
+          phone: booking.phone,
+          startDate: booking.startDate,
+          total: booking.total,
+          rating: booking.rating,
+          timeStamp: booking.timeStamp,
+          car: booking.car,
+          user: booking.user
+        }
+        this.rentCarEndpoint.updateBooking(canceledBooking).subscribe(
+          () => this.snackBar.open('The booking was cancelled!', 'Close', {
+            duration: 1500,
+            panelClass: ["warning-snackbar"]
+          }),
+          () => this.snackBar.open('There was an error when cancelling the booking!!', 'Close', {
+            duration: 1500,
+            panelClass: ["error-snackbar"]
+          })
+        );
+      }
+    });
+  }
+
+  protected readonly AppColors = AppColors;
+  protected readonly convertToCamelCase = convertToCamelCase;
+}
+
+export interface DialogData {
+  title: string;
+  booking: Booking;
 }

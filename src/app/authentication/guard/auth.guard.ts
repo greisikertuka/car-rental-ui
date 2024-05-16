@@ -28,6 +28,10 @@ export class AuthGuard implements CanActivate {
       if (role != 'USER' && role != 'ADMIN') {
         return true;
       }
+      else{
+        this.router.navigateByUrl(RoutesPath.home);
+        return false;
+      }
     } else if (path && userRoutes.indexOf(path) != -1) {
       if (role == 'USER' || role == 'ADMIN') {
         return true;
@@ -46,7 +50,6 @@ export class AuthGuard implements CanActivate {
         return false;
       }
     }
-
     this.router.navigateByUrl(RoutesPath.home);
     return false;
   }

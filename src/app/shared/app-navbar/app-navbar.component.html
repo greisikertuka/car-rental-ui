@@ -1,3 +1,26 @@
-<mat-toolbar>
-    <a routerLink="/" class="text-light" style=" text-decoration: none;">Car Rental</a>
+<mat-toolbar [style.background-color]="AppColors.darkBlueColor">
+  <a [routerLink]=RoutesPath.home class="text-light" style="text-decoration: none;">Car Rental</a>
+  <span style="flex: 1 1 auto;"></span>
+
+  <span *ngIf="role == Role.Admin">
+     <a mat-button [routerLink]="RoutesPath.adminDashboard" class="text-light px-2" style="text-decoration: none;">
+    <mat-icon class="me-1">supervisor_account</mat-icon>
+    Admin section
+  </a>
+  </span>
+  <span *ngIf="loggedIn">
+    <a mat-button [routerLink]="RoutesPath.bookingsOverview" class="text-light px-2" style="text-decoration: none;">
+    <mat-icon class="me-1">list</mat-icon>
+    Bookings Overview
+  </a>
+    <a mat-button [routerLink]="RoutesPath.profile" class="text-light px-2" style="text-decoration: none;">
+    <mat-icon class="me-1">account_box</mat-icon>
+    Profile</a>
+  </span>
+  <span *ngIf="!loggedIn">
+    <a mat-button [routerLink]="RoutesPath.login" class="text-light px-2" style="text-decoration: none;">
+    <mat-icon class="me-1">login</mat-icon>
+    Login
+  </a>
+  </span>
 </mat-toolbar>

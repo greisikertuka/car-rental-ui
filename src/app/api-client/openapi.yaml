@@ -7,7 +7,7 @@ paths:
   /bookings/all:
     get:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       responses:
         "200":
           description: List of bookings found
@@ -22,19 +22,19 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /bookings/car/{carId}:
     get:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       parameters:
-      - name: carId
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: carId
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: List of bookings found for a car
@@ -53,23 +53,23 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /bookings/create:
     post:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       parameters:
-      - name: carId
-        in: query
-        schema:
-          format: int64
-          type: integer
-      - name: userId
-        in: query
-        schema:
-          format: int64
-          type: integer
+        - name: carId
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: userId
+          in: query
+          schema:
+            format: int64
+            type: integer
       requestBody:
         content:
           application/json:
@@ -83,20 +83,20 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /bookings/get/{id}:
     get:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: Booking found
@@ -113,13 +113,13 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /bookings/update:
     put:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       requestBody:
         content:
           application/json:
@@ -133,20 +133,20 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /bookings/user/{userId}:
     get:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: userId
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: List of bookings found for an user
@@ -165,20 +165,20 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /bookings/{id}:
     delete:
       tags:
-      - Booking Endpoint
+        - Booking Endpoint
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: OK
@@ -187,13 +187,13 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /cars/all:
     get:
       tags:
-      - Car Endpoint
+        - Car Endpoint
       responses:
         "200":
           description: List of cars found
@@ -206,7 +206,7 @@ paths:
   /cars/create:
     post:
       tags:
-      - Car Endpoint
+        - Car Endpoint
       requestBody:
         content:
           application/json:
@@ -220,19 +220,19 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /cars/delete/{id}:
     delete:
       tags:
-      - Car Endpoint
+        - Car Endpoint
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: OK
@@ -241,19 +241,19 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /cars/get/{id}:
     get:
       tags:
-      - Car Endpoint
+        - Car Endpoint
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: Car found
@@ -268,7 +268,7 @@ paths:
   /cars/update:
     put:
       tags:
-      - Car Endpoint
+        - Car Endpoint
       requestBody:
         content:
           application/json:
@@ -282,12 +282,12 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /ratings/all:
     get:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       responses:
         "200":
           description: List of ratings found
@@ -302,19 +302,19 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /ratings/car/{carId}:
     get:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       parameters:
-      - name: carId
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: carId
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: List of ratings found for a car
@@ -333,28 +333,28 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - ADMIN
+        - SecurityScheme:
+            - ADMIN
   /ratings/create:
     post:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       parameters:
-      - name: bookingId
-        in: query
-        schema:
-          format: int64
-          type: integer
-      - name: carId
-        in: query
-        schema:
-          format: int64
-          type: integer
-      - name: userId
-        in: query
-        schema:
-          format: int64
-          type: integer
+        - name: bookingId
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: carId
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: userId
+          in: query
+          schema:
+            format: int64
+            type: integer
       requestBody:
         content:
           application/json:
@@ -368,20 +368,20 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /ratings/get/{id}:
     get:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: Rating found
@@ -398,13 +398,13 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /ratings/update:
     put:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       requestBody:
         content:
           application/json:
@@ -418,20 +418,20 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /ratings/user/{userId}:
     get:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: userId
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: List of ratings found for an user
@@ -450,20 +450,20 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /ratings/{id}:
     delete:
       tags:
-      - Rating Endpoint
+        - Rating Endpoint
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         "200":
           description: OK
@@ -472,13 +472,13 @@ paths:
         "403":
           description: Not Allowed
       security:
-      - SecurityScheme:
-        - USER
-        - ADMIN
+        - SecurityScheme:
+            - USER
+            - ADMIN
   /user/login:
     post:
       tags:
-      - User Endpoint
+        - User Endpoint
       requestBody:
         content:
           application/json:
@@ -502,7 +502,7 @@ paths:
   /user/signUp:
     post:
       tags:
-      - User Endpoint
+        - User Endpoint
       requestBody:
         content:
           application/json:
@@ -510,9 +510,9 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         "201":
-          description: Login successful
+          description: Sign up successful
           content:
-            text/plain: {}
+            application/json: {}
         "409":
           description: This username already exists!
           content:
@@ -521,13 +521,13 @@ components:
   schemas:
     Booking:
       required:
-      - startDate
-      - endDate
-      - timeStamp
-      - bookingStatus
-      - total
-      - car
-      - user
+        - startDate
+        - endDate
+        - timeStamp
+        - bookingStatus
+        - total
+        - car
+        - user
       type: object
       properties:
         id:
@@ -552,37 +552,37 @@ components:
           $ref: '#/components/schemas/User'
     BookingStatus:
       enum:
-      - PENDING
-      - ACTIVE
-      - COMPLETED
-      - CANCELED
+        - PENDING
+        - ACTIVE
+        - COMPLETED
+        - CANCELED
       type: string
     Brand:
       enum:
-      - ALFA_ROMEO
-      - AUDI
-      - BMW
-      - BUGATTI
-      - FERRARI
-      - FIAT
-      - FORD
-      - MERCEDES_BENZ
-      - TOYOTA
-      - VOLKSWAGEN
+        - ALFA_ROMEO
+        - AUDI
+        - BMW
+        - BUGATTI
+        - FERRARI
+        - FIAT
+        - FORD
+        - MERCEDES_BENZ
+        - TOYOTA
+        - VOLKSWAGEN
       type: string
     Car:
       required:
-      - model
-      - brand
-      - engine
-      - fuelType
-      - doors
-      - color
-      - transmission
-      - seats
-      - year
-      - licencePlate
-      - price
+        - model
+        - brand
+        - engine
+        - fuelType
+        - doors
+        - color
+        - transmission
+        - seats
+        - year
+        - licencePlate
+        - price
       type: object
       properties:
         id:
@@ -622,14 +622,14 @@ components:
           type: integer
     Color:
       enum:
-      - BEIGE
-      - BLACK
-      - CHROME
-      - GRAY
-      - GREEN
-      - RED
-      - YELLOW
-      - WHITE
+        - BEIGE
+        - BLACK
+        - CHROME
+        - GRAY
+        - GREEN
+        - RED
+        - YELLOW
+        - WHITE
       type: string
     Date:
       format: date
@@ -637,11 +637,11 @@ components:
       example: 2022-03-10
     FuelType:
       enum:
-      - ELECTRIC
-      - GAS
-      - GASOLINE
-      - GASOLINE_GAS
-      - PETROL
+        - ELECTRIC
+        - GAS
+        - GASOLINE
+        - GASOLINE_GAS
+        - PETROL
       type: string
     LoginRequest:
       type: object
@@ -657,10 +657,10 @@ components:
           type: string
     Rating:
       required:
-      - rating
-      - timeStamp
-      - car
-      - user
+        - rating
+        - timeStamp
+        - car
+        - user
       type: object
       properties:
         id:
@@ -679,13 +679,13 @@ components:
           $ref: '#/components/schemas/User'
     Role:
       enum:
-      - ADMIN
-      - USER
+        - ADMIN
+        - USER
       type: string
     Transmission:
       enum:
-      - MANUAL
-      - AUTOMATIC
+        - MANUAL
+        - AUTOMATIC
       type: string
     User:
       type: object

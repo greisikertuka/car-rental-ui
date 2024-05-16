@@ -1,16 +1,66 @@
-<div class="container p-4 bg-secondary">
-  <form class="login-form" (ngSubmit)="login()">
-    <mat-form-field appearance="fill">
-      <mat-label>Username</mat-label>
-      <input matInput placeholder="Enter your username" [(ngModel)]="username" name="username" required>
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" placeholder="Enter your password" [(ngModel)]="password" name="password" required>
-    </mat-form-field>
-    <br>
-    <button mat-raised-button color="primary" type="submit">Login</button>
-  </form>
+<div class="container d-flex justify-content-center">
+  <div *ngIf="loginView">
+    <form [formGroup]="loginForm" class="login-form p-4 mt-3" [style.background-color]="AppColors.darkGrayColor"
+          (ngSubmit)="login()">
+      <mat-form-field appearance="fill" [style.width.px]=formWidth>
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="Enter your username" name="username" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill" [style.width.px]=formWidth>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Enter your password" name="password"
+               required>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button color="accent" type="submit" [disabled]="loginForm.invalid">Login</button>
+      <br>
+    </form>
+    <button class="btn btn-link text-light" (click)="loginView = false">Sign up instead
+    </button>
+  </div>
+  <div *ngIf="!loginView">
+    <form [formGroup]="signUpForm" class="login-form p-4 mt-3" [style.background-color]="AppColors.darkGrayColor"
+          (ngSubmit)="signUp()">
+      <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="name" placeholder="Enter your name" name="name" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" placeholder="Enter your last name" name="lastName" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Enter your email" name="email" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Number</mat-label>
+        <input matInput formControlName="phone" placeholder="Enter your phone number" name="phone" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="Enter your username" name="username" required>
+        <mat-error *ngIf="signUpForm.get('username')?.hasError('pattern')">Username must be at least 8 characters long
+          and contain only letters and numbers
+        </mat-error>
+      </mat-form-field>
+      <br><br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Enter your password" name="password"
+               required>
+        <mat-error *ngIf="signUpForm.get('password')?.hasError('pattern')">Password must be at least 8 characters long
+          and contain only letters and numbers
+        </mat-error>
+      </mat-form-field>
+      <br><br><br>
+      <button mat-raised-button color="accent" type="submit" [disabled]="signUpForm.invalid">Sign up</button>
+    </form>
+    <button class="btn btn-link text-light" (click)="loginView = true">Already have an account?</button>
+  </div>
 </div>
-

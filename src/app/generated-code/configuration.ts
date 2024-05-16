@@ -6,7 +6,6 @@ export interface ConfigurationParameters {
      *  @deprecated Since 5.0. Use credentials instead
      */
     apiKeys?: {[ key: string ]: string};
-    role?: string;
     username?: string;
     password?: string;
     /**
@@ -41,7 +40,6 @@ export class Configuration {
      */
     apiKeys?: {[ key: string ]: string};
     username?: string;
-    role?: string;
     password?: string;
     /**
      *  @deprecated Since 5.0. Use credentials instead
@@ -71,7 +69,6 @@ export class Configuration {
     constructor(configurationParameters: ConfigurationParameters = {}) {
         this.apiKeys = configurationParameters.apiKeys;
         this.username = configurationParameters.username;
-        this.role = configurationParameters.role;
         this.password = configurationParameters.password;
         this.accessToken = configurationParameters.accessToken;
         this.basePath = configurationParameters.basePath;

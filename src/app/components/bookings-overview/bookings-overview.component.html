@@ -1,11 +1,94 @@
-<div class="container bg-secondary">
-  <cdk-accordion class="example-accordion">
-    <div *ngFor="let booking of bookings"
-         class="my-2 p-3 border border-light">
-      <app-booking
-        [booking]=booking
-        [index]=bookings.indexOf(booking)></app-booking>
-    </div>
-  </cdk-accordion>
+<div class="container">
+  <div class="m-2">
+    <table mat-table [dataSource]="dataSource" [style.background-color]="AppColors.darkGrayColor" matSort
+           (matSortChange)="announceSortChange($event)">
+      <ng-container matColumnDef="car">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by car name"> Car</th>
+        <td mat-cell
+            *matCellDef="let booking"> {{ convertToCamelCase(booking.car.brand.toString()) + ' ' + booking.car.model }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by total"> Total</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.total + '€' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bookingStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Booking Status"> Status
+        </th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.bookingStatus.toString() }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Full Name</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.name + ' ' + booking.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by lastName"> Last Name</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by email"> Email</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by phone"> Phone</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef> Start Date</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.startDate | date : 'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef> End Date</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.endDate | date : 'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="timeStamp">
+        <th mat-header-cell *matHeaderCellDef> Timestamp</th>
+        <td mat-cell *matCellDef="let booking"> {{ booking.timeStamp  | date : 'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions</th>
+        <td mat-cell *matCellDef="let booking">
+          <button (click)="openViewRatingDialog(booking)"
+                  *ngIf="(booking.bookingStatus.toString() == 'COMPLETED' && booking.rating != null && true)"
+                  matTooltip="View Rating"
+                  mat-icon-button>
+            <mat-icon color="accent">open_in_full</mat-icon>
+          </button>
+          <button (click)="openAddRatingDialog(booking)"
+                  *ngIf="(booking.bookingStatus.toString() == 'COMPLETED' && booking.rating == null || false)"
+                  matTooltip="Leave Rating" mat-icon-button>
+            <mat-icon color="accent">grade</mat-icon>
+          </button>
+          <button (click)="openChangeStatusDialog(booking)" *ngIf="(booking.bookingStatus.toString() == 'PENDING')"
+                  matTooltip="Cancel Booking" color="accent"
+                  mat-icon-button>
+            <mat-icon>cancel</mat-icon>
+          </button>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <br>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   [showFirstLastButtons]="true"
+                   aria-label="Select page of bookings"
+                   [style.background-color]="AppColors.grayColor">
+    </mat-paginator>
+  </div>
 
 </div>
+
+

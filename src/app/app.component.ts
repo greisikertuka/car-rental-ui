@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AppColors} from "./shared/colors";
+import {Color} from "./generated-code";
 
 @Component({
   selector: 'app-root',
@@ -16,4 +18,6 @@ export class AppComponent {
     this.modalService.open(modal);
   }
 
+  protected readonly AppColors = AppColors;
+  protected readonly Color = Color;
 }

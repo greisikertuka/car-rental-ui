@@ -1,27 +1,29 @@
-<div class="container p-4 bg-secondary">
-  <h1>Car Details</h1>
-  <div class="card border-dark shadow">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-2">
-          <h5 class="card-title">{{ car.brand.toString() }} {{ car.model }}</h5>
-          <p class="card-text">Engine: {{ car.engine }}</p>
-          <p class="card-text">Fuel Type: {{ car.fuelType }}</p>
-          <p class="card-text">Doors: {{ car.doors }}</p>
-          <p class="card-text">Color: {{ car.color }}</p>
-          <p class="card-text">Transmission: {{ car.transmission }}</p>
-          <p class="card-text">Seats: {{ car.seats }}</p>
-          <p class="card-text">Year: {{ car.year }}</p>
-          <p class="card-text">License Plate: {{ car.licencePlate }}</p>
-          <p class="card-text">Price: ${{ car.price }}</p>
+<div class="container d-flex justify-content-center">
+  <div class="p-4">
+    <h1>Car Details</h1>
+    <mat-card class="mb-3" [style.background-color]="AppColors.darkGrayColor">
+      <mat-card-header>
+        <mat-card-title>{{ car?.brand || '' }} {{ car.model }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-md-6">
+            <p>Engine: {{ car.engine }}</p>
+            <p>Fuel Type: {{ car.fuelType }}</p>
+            <p>Doors: {{ car.doors }}</p>
+            <p>Color: {{ car.color }}</p>
+            <p>Transmission: {{ car.transmission }}</p>
+            <p>Seats: {{ car.seats }}</p>
+            <p>Year: {{ car.year }}</p>
+            <p>License Plate: {{ car.licencePlate }}</p>
+            <p>Price: ${{ car.price }}</p>
+          </div>
+          <div class="col-md-6 m-auto">
+            <img src="assets/images/car.png" alt="Car {{ car?.brand || '' + ' ' + car.model }}" class="img-fluid">
+          </div>
         </div>
-        <div class="col-md-2">
-          <img ngSrc="assets/images/car.png" alt="Car {{car.brand.toString() + ' ' + car.model}}" width="400"
-               height="400"
-               class="img-fluid">
-        </div>
-      </div>
-    </div>
-  </div>
-  <button class="btn btn-dark mt-3" (click)="goToRentPage()">Rent</button>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button color="accent" class="mt-2" (click)="goToRentPage()">Rent</button></div>
+
 </div>

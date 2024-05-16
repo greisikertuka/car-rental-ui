@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Car} from "../../generated-code";
 import {CarRentalApi} from "../../service/car-rental-api.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-home',
@@ -10,20 +11,21 @@ import {CarRentalApi} from "../../service/car-rental-api.service";
 export class HomeComponent implements OnInit, OnDestroy {
   cars?: Car[];
 
-  constructor(private carRentalApi: CarRentalApi) {
+  constructor(private carRentalApi: CarRentalApi, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
     this.carRentalApi.carEndpointService.carsAllGet().subscribe(
       (response: Car[]) =>
         this.cars = response,
-      error =>
-        console.error('Error getting cars', error)
+      () =>
+        this.snackBar.open(`Error while loading cars!`, 'Close', {
+          duration: 1500,
+        })
     )
   }
 
   ngOnDestroy(): void {
   }
-
 
 }

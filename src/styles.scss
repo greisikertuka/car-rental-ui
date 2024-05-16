@@ -1,14 +1,15 @@
 @use '@angular/material' as mat;
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-$my-primary: mat.define-palette(mat.$teal-palette, 700);
-$my-accent: mat.define-palette(mat.$teal-palette, A200, A100, A400);
+$my-primary: mat.define-palette(mat.$blue-grey-palette, 400);
+$my-accent: mat.define-palette(mat.$blue-grey-palette, A200, A100, A400);
 $my-warn: mat.define-palette(mat.$red-palette);
 
 $my-theme: mat.define-dark-theme((
   color: (
     primary: $my-primary,
     accent: $my-accent,
-    warn: $my-warn,
+    warn: $my-warn
   ),
   typography: mat.define-typography-config(),
   density: 0,
@@ -24,4 +25,67 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: white;
+  background-color: #556d7c;
+}
+
+ .success-snackbar {
+  background-color: mat.get-color-from-palette($my-primary);
+  color: white;
+}
+
+  .warning-snackbar {
+  background-color: #b75e3f;
+  color: white;
+}
+
+ .error-snackbar {
+  background-color: #881e1e;
+  color: white;
+}
+
+.success-snackbar.mat-mdc-snack-bar-container {
+  .mdc-snackbar__surface {
+    background: #377542;
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+
+  .mat-mdc-snack-bar-label.mdc-snackbar__label {
+    color: white;
+    font-weight: 500;
+    white-space: pre-wrap
+  }
+}
+.warning-snackbar.mat-mdc-snack-bar-container {
+  .mdc-snackbar__surface {
+    background: #b75e3f;
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+
+  .mat-mdc-snack-bar-label.mdc-snackbar__label {
+    color: white;
+    font-weight: 500;
+    white-space: pre-wrap
+  }
+}
+.error-snackbar.mat-mdc-snack-bar-container {
+  .mdc-snackbar__surface {
+    background: #c53c3c;
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+
+  .mat-mdc-snack-bar-label.mdc-snackbar__label {
+    color: white;
+    font-weight: 500;
+    white-space: pre-wrap
+  }
 }

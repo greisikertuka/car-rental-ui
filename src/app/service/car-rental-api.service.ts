@@ -41,7 +41,6 @@ export class CarRentalApi implements OnInit {
   private updateConfiguration(): void {
     this.configuration = new Configuration({
       accessToken: this.token !== null ? this.token.toString() : undefined,
-      role: this.user?.role,
       username: this.user?.username
     });
   }

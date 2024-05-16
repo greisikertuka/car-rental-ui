@@ -27,14 +27,23 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {AdminDashboardComponent} from './components/admin-dashboard/admin-dashboard.component';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
-import {MatLineModule} from "@angular/material/core";
+import {MatLineModule, MatNativeDateModule} from "@angular/material/core";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { BookingComponent } from './shared/booking/booking.component';
+import {BookingComponent} from './shared/booking/booking.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkAccordionModule} from "@angular/cdk/accordion";
-
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSortModule} from "@angular/material/sort";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import { ViewRatingDialogComponent } from './components/bookings-overview/view-rating/view-rating-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { AddRatingComponent } from './components/bookings-overview/add-rating/add-rating.component';
+import { ChangeStatusComponent } from './components/bookings-overview/change-status/change-status.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +60,10 @@ import {CdkAccordionModule} from "@angular/cdk/accordion";
     AppNavbarComponent,
     AdminDashboardComponent,
     ForbiddenComponent,
-    BookingComponent
+    BookingComponent,
+    ViewRatingDialogComponent,
+    AddRatingComponent,
+    ChangeStatusComponent
   ],
   imports: [
     BrowserModule,
@@ -74,9 +86,21 @@ import {CdkAccordionModule} from "@angular/cdk/accordion";
     MatLineModule,
     MatSnackBarModule,
     MatExpansionModule,
-    CdkAccordionModule
+    CdkAccordionModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTooltipModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [
+    MatDatepickerModule,
+    MatNativeDateModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {

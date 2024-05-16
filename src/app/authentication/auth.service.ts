@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import {User} from '../generated-code';
 import {jwtDecode} from 'jwt-decode';
 
-
 @Injectable({
   providedIn: 'root'
 })

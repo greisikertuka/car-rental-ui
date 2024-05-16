@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AuthService} from "../../../authentication/auth.service";
+import {Rating} from "../../../generated-code";
 
 @Injectable({
   providedIn: 'root'
 })
-export class RentCar {
-  private baseUrl = 'http://localhost:8081/bookings';
+export class AddRating {
+  private baseUrl = 'http://localhost:8081/ratings';
   private tokenSubject: BehaviorSubject<string | null>;
 
   constructor(private http: HttpClient, private authService: AuthService) {
@@ -17,9 +18,9 @@ export class RentCar {
     );
   }
 
-  createBooking(carId: number, userId: number, booking: any): Observable<any> {
-    const url = `${this.baseUrl}/create?carId=${carId}&userId=${userId}`;
-    return this.http.post<any>(url, booking, this.getHttpOptions());
+  addRating(carId: number, userId: number, bookingId: number, rating: Rating): Observable<any> {
+    const url = `${this.baseUrl}/create?carId=${carId}&userId=${userId}&bookingId=${bookingId}`;
+    return this.http.post<any>(url, rating, this.getHttpOptions());
   }
 
   private getHttpOptions() {
