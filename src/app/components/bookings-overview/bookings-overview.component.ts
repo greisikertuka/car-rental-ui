@@ -113,6 +113,7 @@ export class BookingsOverviewComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         let canceledBooking: Booking = {
+          id: booking.id,
           bookingStatus: BookingStatus.Canceled,
           email: booking.email,
           endDate: booking.endDate,
@@ -127,11 +128,14 @@ export class BookingsOverviewComponent implements OnInit {
           user: booking.user
         }
         this.rentCarEndpoint.updateBooking(canceledBooking).subscribe(
-          () => this.snackBar.open('The booking was cancelled!', 'Close', {
-            duration: 1500,
-            panelClass: ["warning-snackbar"]
-          }),
-          () => this.snackBar.open('There was an error when cancelling the booking!!', 'Close', {
+          () => {
+            this.snackBar.open('The booking was cancelled!', 'Close', {
+              duration: 1500,
+              panelClass: ["warning-snackbar"]
+            });
+            this.fetchBookings();
+          },
+          () => this.snackBar.open('There was an error when cancelling the booking!', 'Close', {
             duration: 1500,
             panelClass: ["error-snackbar"]
           })
