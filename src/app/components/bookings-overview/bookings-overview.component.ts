@@ -125,7 +125,7 @@ export class BookingsOverviewComponent implements OnInit {
           rating: booking.rating,
           timeStamp: booking.timeStamp,
           car: booking.car,
-          user: booking.user
+          user: booking.user,
         }
         this.rentCarEndpoint.updateBooking(canceledBooking).subscribe(
           () => {
