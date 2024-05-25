@@ -2,7 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
-api/booking-endpoint.service.ts
+api/booking-endpoint-api.ts
 api/booking-endpoint.serviceInterface.ts
 api/car-endpoint.service.ts
 api/car-endpoint.serviceInterface.ts

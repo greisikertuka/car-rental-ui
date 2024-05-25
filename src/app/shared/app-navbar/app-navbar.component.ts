@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {Observable} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
 import {AppColors} from "../colors";
 import {AuthService} from "../../authentication/auth.service";
 import {RoutesPath} from "../routes";
 import {Role} from "../../generated-code";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -23,19 +21,22 @@ export class AppNavbarComponent implements OnInit {
     );
   }
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
   loggedIn: boolean = false;
   role?: Role;
 
-  constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService) {
+  constructor(private authService: AuthService, private snackBar: MatSnackBar) {
   }
 
   protected readonly AppColors = AppColors;
-
   protected readonly RoutesPath = RoutesPath;
   protected readonly Role = Role;
+
+  logout() {
+    this.authService.logout();
+    this.snackBar.open(`Successfully logged out!`, 'Close', {
+      duration: 1500,
+      panelClass: ["success-snackbar"]
+    });
+    window.location.reload();
+  }
 }

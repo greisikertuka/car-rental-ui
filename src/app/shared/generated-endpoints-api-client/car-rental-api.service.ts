@@ -7,8 +7,8 @@ import {
   RatingEndpointService,
   User,
   UserEndpointService
-} from "../generated-code";
-import {AuthService} from "../authentication/auth.service";
+} from "../../generated-code";
+import {AuthService} from "../../authentication/auth.service";
 
 @Injectable({
   providedIn: 'root'

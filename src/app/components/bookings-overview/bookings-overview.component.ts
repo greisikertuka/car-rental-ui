@@ -10,8 +10,8 @@ import {LiveAnnouncer} from "@angular/cdk/a11y";
 import {MatDialog} from "@angular/material/dialog";
 import {ViewRatingDialogComponent} from "./view-rating/view-rating-dialog.component";
 import {AddRatingComponent} from "./add-rating/add-rating.component";
-import {AddRating} from "../../api-client/endpoint/rating/add-rating";
-import {BookingEndpoint} from "../../api-client/endpoint/rent/booking-endpoint.service";
+import {RatingEndpointApi} from "../../api-client/endpoint/rating-endpoint-api";
+import {BookingEndpointApi} from "../../api-client/endpoint/booking-endpoint-api";
 import {convertToCamelCase} from "../../shared/helpers";
 import {ChangeStatusComponent} from "./change-status/change-status.component";
 
@@ -33,8 +33,8 @@ export class BookingsOverviewComponent implements OnInit {
               private snackBar: MatSnackBar,
               private _liveAnnouncer: LiveAnnouncer,
               public dialog: MatDialog,
-              private addRatingEndpoint: AddRating,
-              private rentCarEndpoint: BookingEndpoint) {
+              private addRatingEndpoint: RatingEndpointApi,
+              private rentCarEndpoint: BookingEndpointApi) {
   }
 
   ngOnInit(): void {
@@ -94,7 +94,7 @@ export class BookingsOverviewComponent implements OnInit {
             });
             this.fetchBookings();
           },
-          error => this.snackBar.open('There was an error when adding the review!', 'Close', {
+          () => this.snackBar.open('There was an error when adding the review!', 'Close', {
             duration: 1500,
             panelClass: ["error-snackbar"]
           })

@@ -2,6 +2,7 @@ import {BehaviorSubject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {User} from '../generated-code';
 import {jwtDecode} from 'jwt-decode';
+import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +37,18 @@ export class AuthService {
       email: decodedToken.email,
       username: decodedToken.username,
       name: decodedToken.name,
+      lastName: decodedToken.lastName,
       phone: decodedToken.phone,
       role: decodedToken.role
     };
+  }
+
+  getHttpOptions(tokenSubject: BehaviorSubject<string | null>): { headers: HttpHeaders } {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${tokenSubject.value}`
+    });
+    return {headers: headers};
   }
 }
 

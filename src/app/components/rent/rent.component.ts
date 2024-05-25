@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {BookingStatus, Car, User} from "../../generated-code";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CarRentalApi} from "../../service/car-rental-api.service";
 import {AuthService} from "../../authentication/auth.service";
-import {BookingEndpoint} from "../../api-client/endpoint/rent/booking-endpoint.service";
+import {BookingEndpointApi} from "../../api-client/endpoint/booking-endpoint-api";
 import {RoutesPath} from "../../shared/routes";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppColors} from "../../shared/colors";
 import {formWidth} from "../../shared/helpers";
+import {CarEndpointApi} from "../../api-client/endpoint/car-endpoint-api";
 
 @Component({
   selector: 'app-rent',
@@ -19,9 +19,9 @@ export class RentComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private carRentalApi: CarRentalApi,
+    private carEndpointApi: CarEndpointApi,
     private authService: AuthService,
-    private bookingService: BookingEndpoint,
+    private bookingService: BookingEndpointApi,
     private snackBar: MatSnackBar) {
     this.rentForm = new FormGroup({
       dateRange: new FormGroup({
@@ -53,10 +53,10 @@ export class RentComponent implements OnInit {
       this.userId = user!.id!;
     });
 
-    this.carRentalApi.carEndpointService.carsGetIdGet(this.carId).subscribe(
+    this.carEndpointApi.getCarById(this.carId).subscribe(
       (response: Car) =>
         this.car = response,
-      error =>
+      () =>
         this.snackBar.open('Error while getting car!', 'Close', {
           duration: 1500,
           panelClass: ["error-snackbar"]

@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {AuthService} from "../../../authentication/auth.service";
-import {Booking} from "../../../generated-code";
+import {AuthService} from "../../authentication/auth.service";
+import {Booking} from "../../generated-code";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookingEndpoint {
+export class BookingEndpointApi {
   private baseUrl = 'http://localhost:8081/bookings';
   private tokenSubject: BehaviorSubject<string | null>;
 
@@ -20,24 +20,16 @@ export class BookingEndpoint {
 
   createBooking(carId: number, userId: number, booking: Booking): Observable<any> {
     const url = `${this.baseUrl}/create?carId=${carId}&userId=${userId}`;
-    return this.http.post<any>(url, booking, this.getHttpOptions());
+    return this.http.post<any>(url, booking, this.authService.getHttpOptions(this.tokenSubject));
   }
 
   updateBooking(booking: Booking): Observable<any> {
     const url = `${this.baseUrl}/update`;
-    return this.http.put<any>(url, booking, this.getHttpOptions());
+    return this.http.put<any>(url, booking, this.authService.getHttpOptions(this.tokenSubject));
   }
 
   getBookingsByUserId(userId: number): Observable<Booking[]> {
     const url = `${this.baseUrl}/user/${userId}`;
-    return this.http.get<Booking[]>(url, this.getHttpOptions());
-  }
-
-  private getHttpOptions() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.tokenSubject.value}` // Use BehaviorSubject's value property
-    });
-    return {headers: headers};
+    return this.http.get<Booking[]>(url, this.authService.getHttpOptions(this.tokenSubject));
   }
 }

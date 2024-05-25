@@ -55,10 +55,10 @@
         <input matInput formControlName="password" type="password" placeholder="Enter your password" name="password"
                required>
         <mat-error *ngIf="signUpForm.get('password')?.hasError('pattern')">Password must be at least 8 characters long
-          and contain only letters and numbers
+          and contain uppercase and lowercase letters, numbers and special characters
         </mat-error>
       </mat-form-field>
-      <br><br><br>
+      <br><br><br><br><br><br>
       <button mat-raised-button color="accent" type="submit" [disabled]="signUpForm.invalid">Sign up</button>
     </form>
     <button class="btn btn-link text-light" (click)="loginView = true">Already have an account?</button>

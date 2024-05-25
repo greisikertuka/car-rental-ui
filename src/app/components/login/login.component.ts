@@ -1,11 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../authentication/auth.service";
-import {CarRentalApi} from "../../service/car-rental-api.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {RoutesPath} from "../../shared/routes";
 import {AppColors} from "../../shared/colors";
-import {SignUpService} from "../../api-client/endpoint/user/signup";
+import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
 import {FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Role} from "../../generated-code";
 import {formWidth} from "../../shared/helpers";
@@ -15,13 +14,19 @@ import {formWidth} from "../../shared/helpers";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+
+  token: string | undefined = '';
+  loginView: boolean = true;
+  loginForm: FormGroup;
+  signUpForm: FormGroup;
+  requireAccess: boolean = false;
+
   constructor(private authService: AuthService,
-              private carRentalApi: CarRentalApi,
-              private signUpService: SignUpService,
+              private userEndpointApi: UserEndpointApi,
               private formBuilder: FormBuilder,
               private snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router, private route: ActivatedRoute,) {
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -38,23 +43,25 @@ export class LoginComponent {
     });
   }
 
-  token: string | undefined = '';
-  loginView: boolean = true;
-  loginForm: FormGroup;
-  signUpForm: FormGroup;
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.requireAccess = params['requireAccess'] == 'true';
+    });
+  }
 
   usernameValidator(): ValidatorFn {
-    const usernameRegex = /^[a-zA-Z0-9]{8,}$/;
+    const usernameRegex = /^[a-zA-Z0-9]{8}$/;
     return Validators.pattern(usernameRegex);
   }
 
   passwordValidator(): ValidatorFn {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+    // At least one uppercase, one lowercase, one number, one special character, and at least 8 characters long
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     return Validators.pattern(passwordRegex);
   }
 
   login(): void {
-    this.carRentalApi.userEndpointService.userLoginPost({
+    this.userEndpointApi.login({
       username: this.loginForm.value['username'],
       password: this.loginForm.value['password']
     }).subscribe(
@@ -66,7 +73,18 @@ export class LoginComponent {
             duration: 1500,
             panelClass: ["success-snackbar"]
           });
-          this.router.navigate([RoutesPath.home]);
+          let path = localStorage.getItem("path");
+          console.log(path);
+          console.log(this.requireAccess);
+          if (this.requireAccess && path != undefined) {
+            let queryParams = JSON.parse(localStorage.getItem("queryParams") || "{}");
+            localStorage.removeItem("path");
+            localStorage.removeItem("queryParams");
+            console.log(queryParams);
+            this.router.navigate([path], {queryParams: queryParams});
+          } else {
+            this.router.navigate([RoutesPath.home]);
+          }
         }
       },
       error =>
@@ -78,7 +96,7 @@ export class LoginComponent {
   }
 
   signUp(): void {
-    this.signUpService.signUp({
+    this.userEndpointApi.signUp({
       name: this.signUpForm.value['name'],
       lastName: this.signUpForm.value['lastName'],
       email: this.signUpForm.value['email'],
@@ -87,7 +105,7 @@ export class LoginComponent {
       password: this.signUpForm.value['password'],
       role: Role.User
     }).subscribe(
-      (response: any) => {
+      () => {
         this.snackBar.open('Successfully created account!', 'Close', {
           duration: 1500,
           panelClass: ["success-snackbar"]

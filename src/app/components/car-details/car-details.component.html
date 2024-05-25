@@ -3,7 +3,7 @@
     <h1>Car Details</h1>
     <mat-card class="mb-3" [style.background-color]="AppColors.darkGrayColor">
       <mat-card-header>
-        <mat-card-title>{{ car?.brand || '' }} {{ car.model }}</mat-card-title>
+        <mat-card-title>{{ car.brand || '' }} {{ car.model }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="row">
@@ -19,11 +19,13 @@
             <p>Price: ${{ car.price }}</p>
           </div>
           <div class="col-md-6 m-auto">
-            <img src="assets/images/car.png" alt="Car {{ car?.brand || '' + ' ' + car.model }}" class="img-fluid">
+            <img ngSrc="assets/images/car.png" alt="Car {{ car.brand || '' + ' ' + car.model }}" class="img-fluid"
+                 height="302" width="474">
           </div>
         </div>
       </mat-card-content>
     </mat-card>
-    <button mat-raised-button color="accent" class="mt-2" (click)="goToRentPage()">Rent</button></div>
+    <button mat-raised-button color="accent" class="mt-2" (click)="goToRentPage()">Rent</button>
+  </div>
 
 </div>
