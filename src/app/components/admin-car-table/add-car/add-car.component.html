@@ -1,0 +1,96 @@
+<div [style.background-color]="AppColors.darkGrayColor" class="p-0 m-0">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="addCarForm">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Model</mat-label>
+        <input matInput formControlName="model" placeholder="Enter car model" name="model" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Brand</mat-label>
+        <mat-select formControlName="brand">
+          <mat-option *ngFor="let brand of brands" [value]="brand.value">
+            {{ brand.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Engine</mat-label>
+        <input matInput formControlName="engine" placeholder="Enter car engine" name="engine" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fuel Type</mat-label>
+        <mat-select formControlName="fuelType">
+          <mat-option *ngFor="let fuelType of fuelTypes" [value]="fuelType.value">
+            {{ fuelType.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Doors</mat-label>
+        <input matInput formControlName="doors" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Color</mat-label>
+        <mat-select formControlName="color">
+          <mat-option *ngFor="let color of colors" [value]="color.value">
+            {{ color.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fuel Type</mat-label>
+        <mat-select formControlName="transmission">
+          <mat-option *ngFor="let transmission of transmissionTypes" [value]="transmission.value">
+            {{ transmission.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Seats</mat-label>
+        <input matInput formControlName="seats" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Year</mat-label>
+        <input matInput formControlName="year" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>License Plate</mat-label>
+        <input matInput formControlName="licencePlate" placeholder="Enter license plate" name="licencePlate" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <input matInput formControlName="price" type="number">
+      </mat-form-field>
+      <mat-error *ngIf="addCarForm.get('price')?.hasError('min')">Price cannot be negative</mat-error>
+      <mat-error *ngIf="addCarForm.get('seats')?.hasError('min') || addCarForm.get('seats')?.hasError('max')">Please
+        input valid seats
+      </mat-error>
+      <mat-error *ngIf="addCarForm.get('doors')?.hasError('min') || addCarForm.get('doors')?.hasError('max')">Please
+        input valid doors count
+      </mat-error>
+      <mat-error *ngIf="addCarForm.get('year')?.hasError('year') || addCarForm.get('year')?.hasError('max')">Please
+        input valid year
+      </mat-error>
+      <br><br><br><br>
+      <div mat-dialog-actions>
+        <button mat-raised-button color="accent" type="submit" [disabled]="addCarForm.invalid" (click)="save()">Create
+          Car
+        </button>
+        <button mat-button (click)="close()">Close</button>
+      </div>
+
+    </form>
+  </div>
+</div>

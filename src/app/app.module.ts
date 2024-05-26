@@ -45,6 +45,9 @@ import { AddRatingComponent } from './components/bookings-overview/add-rating/ad
 import { ChangeStatusComponent } from './components/bookings-overview/change-status/change-status.component';
 import {AdminUserTableComponent} from "./components/admin-user-table/admin-user-table.component";
 import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-table.component";
+import { AddCarComponent } from './components/admin-car-table/add-car/add-car.component';
+import { DeleteCarComponent } from './components/admin-car-table/delete-car/delete-car.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -65,7 +68,9 @@ import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-tab
     AddRatingComponent,
     ChangeStatusComponent,
     AdminUserTableComponent,
-    AdminCarTableComponent
+    AdminCarTableComponent,
+    AddCarComponent,
+    DeleteCarComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +103,8 @@ import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-tab
     MatPaginatorModule,
     MatSortModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   providers: [
     MatDatepickerModule,

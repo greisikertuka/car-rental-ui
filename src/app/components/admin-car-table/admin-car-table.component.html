@@ -5,7 +5,7 @@
         <span class="row">
           <span class="col justify-content-start">Cars</span>
         <span class="col justify-content-end">
-          <button mat-raised-button color="accent">Add Car</button>
+          <button mat-raised-button color="accent" (click)="openAddCarPopup()">Add Car</button>
         </span>
         </span>
       </mat-card-title>
@@ -49,10 +49,19 @@
                                                      class="p-2 bg-success text-light">{{ car.price }} €</span></td>
           </ng-container>
 
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef> Action</th>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions</th>
             <td mat-cell *matCellDef="let car">
-              <button mat-button color="warn" (click)="deleteCar(car.id)">Delete</button>
+              <button (click)="navigateToCarDetails(car.id)"
+                      matTooltip="View Details"
+                      mat-icon-button>
+                <mat-icon color="accent">open_in_new</mat-icon>
+              </button>
+              <button (click)="openDeleteCarDialog(car)"
+                      matTooltip="Delete car" color="warn"
+                      mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
             </td>
           </ng-container>
 

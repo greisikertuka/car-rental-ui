@@ -16,7 +16,9 @@
             <p>Seats: {{ car.seats }}</p>
             <p>Year: {{ car.year }}</p>
             <p>License Plate: {{ car.licencePlate }}</p>
-            <p>Price: ${{ car.price }}</p>
+            <p>Price: <span style="border-radius: 6px" class="p-2 bg-success text-light">
+              {{ car.price }} $
+            </span></p>
           </div>
           <div class="col-md-6 m-auto">
             <img ngSrc="assets/images/car.png" alt="Car {{ car.brand || '' + ' ' + car.model }}" class="img-fluid"

@@ -32,4 +32,9 @@ export class CarEndpointApi {
     const url = `${this.baseUrl}/delete/${id}`;
     return this.http.delete<any>(url, this.authService.getHttpOptions(this.tokenSubject));
   }
+
+  createCar(car: Car) {
+    const url = `${this.baseUrl}/create`;
+    return this.http.post<any>(url, car, this.authService.getHttpOptions(this.tokenSubject));
+  }
 }
