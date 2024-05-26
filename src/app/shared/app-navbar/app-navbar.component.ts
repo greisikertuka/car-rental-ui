@@ -23,7 +23,6 @@ export class AppNavbarComponent implements OnInit {
 
   loggedIn: boolean = false;
   role?: Role;
-
   constructor(private authService: AuthService, private snackBar: MatSnackBar) {
   }
 

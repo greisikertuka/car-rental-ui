@@ -42,11 +42,11 @@ export class AuthGuard implements CanActivate {
         return false;
       }
     } else if (path && adminRoutes.indexOf(path) != -1) {
-      if (isUser) {
+      if (isAdmin) {
+        return true;
+      } else if (isUser) {
         this.router.navigateByUrl(RoutesPath.home);
         return false;
-      } else if (isAdmin) {
-        return true;
       } else {
         this.router.navigateByUrl(RoutesPath.forbidden);
         return false;

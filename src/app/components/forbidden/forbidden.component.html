@@ -1,11 +1,11 @@
-<div class="container p-4 bg-secondary">
-  <div class="forbidden-container mat-elevation-z8">
-    <mat-card>
+<div class="container">
+  <div class="m-2">
+    <mat-card class="p-2" [style.background-color]="AppColors.darkGrayColor">
       <mat-card-title>403 - Forbidden</mat-card-title>
       <mat-card-content>
         <p>You don't have permission to access this page.</p>
       </mat-card-content>
-      <mat-card-actions>
+      <mat-card-actions align="end">
         <button mat-raised-button color="primary" routerLink="/">Go to Homepage</button>
       </mat-card-actions>
     </mat-card>

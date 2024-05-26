@@ -12,7 +12,7 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {RentComponent} from './components/rent/rent.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClientModule} from "@angular/common/http";
-import {CarCardComponent} from './shared/car-card/car-card.component';
+import {CarCardComponent} from './components/car-details/car-card/car-card.component';
 import {NgOptimizedImage} from "@angular/common";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
@@ -31,7 +31,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatLineModule, MatNativeDateModule} from "@angular/material/core";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {BookingComponent} from './shared/booking/booking.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkAccordionModule} from "@angular/cdk/accordion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -44,6 +43,8 @@ import { ViewRatingDialogComponent } from './components/bookings-overview/view-r
 import {MatDialogModule} from "@angular/material/dialog";
 import { AddRatingComponent } from './components/bookings-overview/add-rating/add-rating.component';
 import { ChangeStatusComponent } from './components/bookings-overview/change-status/change-status.component';
+import {AdminUserTableComponent} from "./components/admin-user-table/admin-user-table.component";
+import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-table.component";
 
 @NgModule({
   declarations: [
@@ -60,10 +61,11 @@ import { ChangeStatusComponent } from './components/bookings-overview/change-sta
     AppNavbarComponent,
     AdminDashboardComponent,
     ForbiddenComponent,
-    BookingComponent,
     ViewRatingDialogComponent,
     AddRatingComponent,
-    ChangeStatusComponent
+    ChangeStatusComponent,
+    AdminUserTableComponent,
+    AdminCarTableComponent
   ],
   imports: [
     BrowserModule,

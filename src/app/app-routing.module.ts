@@ -11,6 +11,8 @@ import {RoutesPath} from "./shared/routes";
 import {AuthGuard} from "./authentication/guard/auth.guard";
 import {AdminDashboardComponent} from "./components/admin-dashboard/admin-dashboard.component";
 import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
+import {AdminUserTableComponent} from "./components/admin-user-table/admin-user-table.component";
+import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-table.component";
 
 export const routes: Routes = [
   {path: RoutesPath.home, component: HomeComponent},
@@ -21,7 +23,9 @@ export const routes: Routes = [
   {path: RoutesPath.profile, component: ProfileComponent, canActivate: [AuthGuard]},
   {path: RoutesPath.rent, component: RentComponent, canActivate: [AuthGuard]},
   {path: RoutesPath.adminDashboard, component: AdminDashboardComponent, canActivate: [AuthGuard]},
-  {path: RoutesPath.forbidden, component: ForbiddenComponent}
+  {path: RoutesPath.forbidden, component: ForbiddenComponent},
+  {path: RoutesPath.adminUserTable, component: AdminUserTableComponent, canActivate: [AuthGuard]},
+  {path: RoutesPath.adminCarTable, component: AdminCarTableComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

@@ -8,4 +8,6 @@ export abstract class RoutesPath {
   static readonly rent = 'rent';
   static readonly adminDashboard = 'admin-dashboard';
   static readonly forbidden = 'forbidden';
+  static readonly adminUserTable = 'users';
+  static readonly adminCarTable = 'cars-overview';
 }

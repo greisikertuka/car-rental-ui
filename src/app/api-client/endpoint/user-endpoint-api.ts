@@ -37,4 +37,14 @@ export class UserEndpointApi {
     const url = `${this.baseUrl}/update`;
     return this.http.put<any>(url, user, this.authService.getHttpOptions(this.tokenSubject));
   }
+
+  getAllUsers(): Observable<User[]> {
+    const url = `${this.baseUrl}/all`;
+    return this.http.get<any>(url, this.authService.getHttpOptions(this.tokenSubject));
+  }
+
+  deleteUserById(id: number) {
+    const url = `${this.baseUrl}/delete/${id}`;
+    return this.http.delete<any>(url, this.authService.getHttpOptions(this.tokenSubject));
+  }
 }

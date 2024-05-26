@@ -27,4 +27,9 @@ export class CarEndpointApi {
     const url = `${this.baseUrl}/get/${id}`;
     return this.http.get<Car>(url);
   }
+
+  deleteCarById(id: number) {
+    const url = `${this.baseUrl}/delete/${id}`;
+    return this.http.delete<any>(url, this.authService.getHttpOptions(this.tokenSubject));
+  }
 }

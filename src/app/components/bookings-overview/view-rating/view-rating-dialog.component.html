@@ -3,7 +3,7 @@
   <div mat-dialog-content>
     <p>Rating: {{ rating.rating }}</p>
     <p>Comment: {{ rating.comment }}</p>
-    <p>Time Stamp: {{ rating.timeStamp | date : 'dd.MM.yyyy' }}</p>
+    <p>Time of Booking: {{ rating.timeStamp | date : 'dd.MM.yyyy' }}</p>
     <span *ngFor="let index of [].constructor(rating.rating)">
     <mat-icon [color]="rating.rating > index ? 'primary' : 'accent'">star</mat-icon>
   </span>

@@ -1,7 +1,7 @@
 import {RoutesPath} from "./routes";
 
 export const userRoutes = [RoutesPath.rent, RoutesPath.profile, RoutesPath.bookingsOverview, RoutesPath.pageNotFound];
-export const adminRoutes = [RoutesPath.adminDashboard];
+export const adminRoutes = [RoutesPath.adminDashboard, RoutesPath.adminCarTable, RoutesPath.adminUserTable];
 export const formWidth = 250;
 
 export function convertToCamelCase(value: String): String {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AppColors} from "../../shared/colors";
 
 @Component({
   selector: 'app-forbidden',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class ForbiddenComponent {
 
+    protected readonly AppColors = AppColors;
 }

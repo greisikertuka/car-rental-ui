@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
-import {Car} from "../../generated-code";
+import {Car} from "../../../generated-code";
 import {Params, Router} from '@angular/router';
-import {RoutesPath} from "../routes";
-import {AppColors} from "../colors";
+import {RoutesPath} from "../../../shared/routes";
+import {AppColors} from "../../../shared/colors";
 
 @Component({
   selector: 'app-car-card',
