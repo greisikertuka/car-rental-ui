@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
   }
 
   usernameValidator(): ValidatorFn {
-    const usernameRegex = /^[a-zA-Z0-9]{8}$/;
+    const usernameRegex = /^[a-zA-Z0-9]{8,}$/;
     return Validators.pattern(usernameRegex);
   }
 

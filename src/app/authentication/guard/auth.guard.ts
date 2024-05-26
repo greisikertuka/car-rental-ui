@@ -59,7 +59,6 @@ export class AuthGuard implements CanActivate {
 
   saveToLocalStorage(path: string, route: ActivatedRouteSnapshot) {
     localStorage.setItem('path', path);
-    console.log(route.queryParams);
     localStorage.setItem('queryParams', JSON.stringify(route.queryParams || {}));
   }
 }

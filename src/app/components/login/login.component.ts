@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   }
 
   usernameValidator(): ValidatorFn {
-    const usernameRegex = /^[a-zA-Z0-9]{8}$/;
+    const usernameRegex = /^[a-zA-Z0-9]{8,}$/;
     return Validators.pattern(usernameRegex);
   }
 
@@ -74,13 +74,10 @@ export class LoginComponent implements OnInit {
             panelClass: ["success-snackbar"]
           });
           let path = localStorage.getItem("path");
-          console.log(path);
-          console.log(this.requireAccess);
           if (this.requireAccess && path != undefined) {
             let queryParams = JSON.parse(localStorage.getItem("queryParams") || "{}");
             localStorage.removeItem("path");
             localStorage.removeItem("queryParams");
-            console.log(queryParams);
             this.router.navigate([path], {queryParams: queryParams});
           } else {
             this.router.navigate([RoutesPath.home]);

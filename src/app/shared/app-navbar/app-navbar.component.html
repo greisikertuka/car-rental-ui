@@ -1,5 +1,6 @@
 <mat-toolbar [style.background-color]="AppColors.darkBlueColor">
-  <a [routerLink]=RoutesPath.home class="text-light" style="text-decoration: none;">Car Rental</a>
+  <a [routerLink]=RoutesPath.home class="text-light" style="text-decoration: none;">
+    <img width="25" height="25" class="me-2 mb-1" src="assets/images/bmw.svg" alt="BMW">Car Rental</a>
   <span style="flex: 1 1 auto;"></span>
 
   <span *ngIf="role == Role.Admin">
