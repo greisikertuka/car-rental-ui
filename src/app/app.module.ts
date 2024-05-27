@@ -49,6 +49,7 @@ import {ConfirmDialogComponent} from './shared/approve-dialog/confirm-dialog.com
 import {MatSelectModule} from "@angular/material/select";
 import {UserDetailsComponent} from './components/user-details/user-details.component';
 import {AddUserComponent} from './components/admin-user-table/add-user/add-user.component';
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import {AddUserComponent} from './components/admin-user-table/add-user/add-user.
   ],
   providers: [
     MatDatepickerModule,
-    MatNativeDateModule],
+    MatNativeDateModule,
+    CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

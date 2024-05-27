@@ -11,8 +11,11 @@
       </mat-card-title>
       <br>
       <mat-card-content>
-        <table [dataSource]="dataSource" [style.background-color]="AppColors.darkGrayColor" mat-table matSort
-               (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+        <table [dataSource]="dataSource"
+               [style.background-color]="AppColors.darkGrayColor"
+               mat-table matSort
+               (matSortChange)="announceSortChange($event)"
+               class="mat-elevation-z8">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> ID</th>
             <td mat-cell *matCellDef="let car"> {{ car.id }}</td>

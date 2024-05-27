@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Car} from "../../generated-code";
 import {AuthService} from "../../authentication/auth.service";
 
@@ -9,13 +9,8 @@ import {AuthService} from "../../authentication/auth.service";
 })
 export class CarEndpointApi {
   private baseUrl = 'http://localhost:8081/cars';
-  private tokenSubject: BehaviorSubject<string | null>;
 
   constructor(private http: HttpClient, private authService: AuthService) {
-    this.tokenSubject = new BehaviorSubject<string | null>(null);
-    this.authService.tokenSubject$.subscribe(
-      token => this.tokenSubject.next(token)
-    );
   }
 
   getAllCars(): Observable<Car[]> {
@@ -30,11 +25,11 @@ export class CarEndpointApi {
 
   deleteCarById(id: number) {
     const url = `${this.baseUrl}/delete/${id}`;
-    return this.http.delete<any>(url, this.authService.getHttpOptions(this.tokenSubject));
+    return this.http.delete<any>(url, this.authService.getHttpOptions());
   }
 
   createCar(car: Car) {
     const url = `${this.baseUrl}/create`;
-    return this.http.post<any>(url, car, this.authService.getHttpOptions(this.tokenSubject));
+    return this.http.post<any>(url, car, this.authService.getHttpOptions());
   }
 }

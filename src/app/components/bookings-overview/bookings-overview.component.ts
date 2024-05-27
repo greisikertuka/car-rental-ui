@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Booking, BookingStatus, User} from "../../generated-code";
+import {Booking, BookingStatus, Role, User} from "../../generated-code";
 import {AuthService} from "../../authentication/auth.service";
 import {AppColors} from "../../shared/colors";
 import {MatTableDataSource} from "@angular/material/table";
@@ -34,7 +34,7 @@ export class BookingsOverviewComponent implements OnInit {
               private _liveAnnouncer: LiveAnnouncer,
               public dialog: MatDialog,
               private addRatingEndpoint: RatingEndpointApi,
-              private rentCarEndpoint: BookingEndpointApi) {
+              private bookingEndpointApi: BookingEndpointApi) {
   }
 
   ngOnInit(): void {
@@ -45,20 +45,38 @@ export class BookingsOverviewComponent implements OnInit {
   }
 
   fetchBookings() {
-    this.rentCarEndpoint.getBookingsByUserId(this.user.id!).subscribe(
-      (response: Booking[]) => {
-        this.bookings = response;
-        this.dataSource = new MatTableDataSource<Booking>(this.bookings);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      },
-      () => {
-        this.snackBar.open('Error while getting bookings!', 'Close', {
-          duration: 1500,
-          panelClass: ["error-snackbar"]
-        })
-      }
-    );
+    if (this.user.role == Role.User) {
+      this.bookingEndpointApi.getBookingsByUserId(this.user.id!).subscribe(
+        (response: Booking[]) => {
+          this.bookings = response;
+          this.dataSource = new MatTableDataSource<Booking>(this.bookings);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        () => {
+          this.snackBar.open('Error while getting bookings!', 'Close', {
+            duration: 1500,
+            panelClass: ["error-snackbar"]
+          })
+        }
+      );
+    } else if (this.user.role == Role.Admin) {
+      this.bookingEndpointApi.getAllBookings().subscribe(
+        (response: Booking[]) => {
+          this.bookings = response;
+          this.dataSource = new MatTableDataSource<Booking>(this.bookings);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        () => {
+          this.snackBar.open('Error while getting bookings!', 'Close', {
+            duration: 1500,
+            panelClass: ["error-snackbar"]
+          })
+        }
+      );
+    }
+
   }
 
   announceSortChange(sortState: Sort) {
@@ -103,7 +121,7 @@ export class BookingsOverviewComponent implements OnInit {
     });
   }
 
-  openChangeStatusDialog(booking: Booking): void {
+  openCancelBookingDialog(booking: Booking): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',
       height: '200px',
@@ -112,9 +130,8 @@ export class BookingsOverviewComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        let canceledBooking = booking;
-        canceledBooking.bookingStatus = BookingStatus.Canceled;
-        this.rentCarEndpoint.updateBooking(canceledBooking).subscribe(
+        booking.bookingStatus = BookingStatus.Canceled;
+        this.bookingEndpointApi.updateBooking(booking).subscribe(
           () => {
             this.snackBar.open('The booking was cancelled!', 'Close', {
               duration: 1500,
@@ -131,8 +148,62 @@ export class BookingsOverviewComponent implements OnInit {
     });
   }
 
+  openAcceptBookingDialog(booking: Booking): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      height: '200px',
+      data: {title: 'Do you want to approve this booking?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        booking.bookingStatus = BookingStatus.Active;
+        this.bookingEndpointApi.updateBooking(booking).subscribe(
+          () => {
+            this.snackBar.open('Booking was approved!', 'Close', {
+              duration: 1500,
+              panelClass: ["success-snackbar"]
+            });
+            this.fetchBookings();
+          },
+          () => this.snackBar.open('There was an error approving the booking!', 'Close', {
+            duration: 1500,
+            panelClass: ["error-snackbar"]
+          })
+        );
+      }
+    });
+  }
+
+  openDeleteBookingDialog(booking: Booking): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      height: '200px',
+      data: {title: 'Are you sure you want to delete this booking?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.bookingEndpointApi.deleteBookingById(booking.id!).subscribe(
+          () => {
+            this.snackBar.open('The booking was deleted!', 'Close', {
+              duration: 1500,
+              panelClass: ["success-snackbar"]
+            });
+            this.fetchBookings();
+          },
+          () => this.snackBar.open('There was an error when deleting the booking!', 'Close', {
+            duration: 1500,
+            panelClass: ["error-snackbar"]
+          })
+        );
+      }
+    });
+  }
+
   protected readonly AppColors = AppColors;
   protected readonly convertToCamelCase = convertToCamelCase;
+  protected readonly Role = Role;
 }
 
 export interface DialogData {

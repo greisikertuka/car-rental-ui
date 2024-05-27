@@ -15,13 +15,11 @@
      </a>
   </span>
 
-  <span *ngIf="role == Role.User">
-     <a mat-button [routerLink]="RoutesPath.bookingsOverview" class="text-light px-2" style="text-decoration: none;">
-  <mat-icon class="me-1">list</mat-icon>Bookings Overview
-</a>
-  </span>
-
   <span *ngIf="loggedIn">
+     <a mat-button [routerLink]="RoutesPath.bookingsOverview" class="text-light px-2" style="text-decoration: none;">
+  <mat-icon class="me-1">list</mat-icon><span *ngIf="role==Role.Admin">Manage Bookings</span><span
+       *ngIf="role == Role.User">My Bookings</span>
+    </a>
     <a mat-button [routerLink]="RoutesPath.profile" class="text-light px-2" style="text-decoration: none;">
     <mat-icon class="me-1">account_box</mat-icon>Profile
     </a>
