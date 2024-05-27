@@ -1,35 +1,40 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../generated-code";
-import {AuthService} from "../../authentication/auth.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {AppColors} from "../../shared/colors";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
 import {passwordValidator, usernameValidator} from "../../shared/helpers";
+import {AuthService} from "../../authentication/auth.service";
+import {AppColors} from "../../shared/colors";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class UserDetailsComponent implements OnInit {
+  userId!: number;
   user!: User;
   editMode: boolean = false;
   profileEditForm!: FormGroup;
   token: string | undefined = '';
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              private fb: FormBuilder, private userEndpointApi: UserEndpointApi) {
+  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute,
+              private fb: FormBuilder, private userEndpointApi: UserEndpointApi, private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(
-      user => this.user = user!,
-      () => this.snackBar.open('There was an error when getting the user!', 'Close', {
+    this.route.queryParams.subscribe(params => {
+      this.userId = +params['userId'];
+    });
+    this.userEndpointApi.getUserById(this.userId).subscribe(
+      user => this.user = user,
+      error => this.snackBar.open('Error when getting using', 'Close', {
         duration: 1500,
         panelClass: ["error-snackbar"]
       })
-    );
+    )
     this.profileEditForm = this.fb.group({
       name: [this.user.name, Validators.required],
       lastName: [this.user.lastName, Validators.required],

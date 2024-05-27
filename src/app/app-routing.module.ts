@@ -13,6 +13,7 @@ import {AdminDashboardComponent} from "./components/admin-dashboard/admin-dashbo
 import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
 import {AdminUserTableComponent} from "./components/admin-user-table/admin-user-table.component";
 import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-table.component";
+import {UserDetailsComponent} from "./components/user-details/user-details.component";
 
 export const routes: Routes = [
   {path: RoutesPath.home, component: HomeComponent},
@@ -26,6 +27,7 @@ export const routes: Routes = [
   {path: RoutesPath.forbidden, component: ForbiddenComponent},
   {path: RoutesPath.adminUserTable, component: AdminUserTableComponent, canActivate: [AuthGuard]},
   {path: RoutesPath.adminCarTable, component: AdminCarTableComponent, canActivate: [AuthGuard]},
+  {path: RoutesPath.userDetails, component: UserDetailsComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

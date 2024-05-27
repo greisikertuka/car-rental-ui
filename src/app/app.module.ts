@@ -39,15 +39,16 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { ViewRatingDialogComponent } from './components/bookings-overview/view-rating/view-rating-dialog.component';
+import {ViewRatingDialogComponent} from './components/bookings-overview/view-rating/view-rating-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import { AddRatingComponent } from './components/bookings-overview/add-rating/add-rating.component';
-import { ChangeStatusComponent } from './components/bookings-overview/change-status/change-status.component';
+import {AddRatingComponent} from './components/bookings-overview/add-rating/add-rating.component';
 import {AdminUserTableComponent} from "./components/admin-user-table/admin-user-table.component";
 import {AdminCarTableComponent} from "./components/admin-car-table/admin-car-table.component";
-import { AddCarComponent } from './components/admin-car-table/add-car/add-car.component';
-import { DeleteCarComponent } from './components/admin-car-table/delete-car/delete-car.component';
+import {AddCarComponent} from './components/admin-car-table/add-car/add-car.component';
+import {ConfirmDialogComponent} from './shared/approve-dialog/confirm-dialog.component';
 import {MatSelectModule} from "@angular/material/select";
+import {UserDetailsComponent} from './components/user-details/user-details.component';
+import {AddUserComponent} from './components/admin-user-table/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -66,11 +67,12 @@ import {MatSelectModule} from "@angular/material/select";
     ForbiddenComponent,
     ViewRatingDialogComponent,
     AddRatingComponent,
-    ChangeStatusComponent,
     AdminUserTableComponent,
     AdminCarTableComponent,
     AddCarComponent,
-    DeleteCarComponent
+    ConfirmDialogComponent,
+    UserDetailsComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,7 @@ import {AppColors} from "../../shared/colors";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
 import {FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Role} from "../../generated-code";
-import {formWidth} from "../../shared/helpers";
+import {formWidth, passwordValidator, usernameValidator} from "../../shared/helpers";
 
 @Component({
   selector: 'app-login',
@@ -38,8 +38,8 @@ export class LoginComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      username: ['', this.usernameValidator()],
-      password: ['', this.passwordValidator()]
+      username: ['', usernameValidator()],
+      password: ['', passwordValidator()]
     });
   }
 
@@ -47,17 +47,6 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe((params: Params) => {
       this.requireAccess = params['requireAccess'] == 'true';
     });
-  }
-
-  usernameValidator(): ValidatorFn {
-    const usernameRegex = /^[a-zA-Z0-9]{8,}$/;
-    return Validators.pattern(usernameRegex);
-  }
-
-  passwordValidator(): ValidatorFn {
-    // At least one uppercase, one lowercase, one number, one special character, and at least 8 characters long
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    return Validators.pattern(passwordRegex);
   }
 
   login(): void {

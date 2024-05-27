@@ -10,4 +10,5 @@ export abstract class RoutesPath {
   static readonly forbidden = 'forbidden';
   static readonly adminUserTable = 'users';
   static readonly adminCarTable = 'cars-overview';
+  static readonly userDetails = 'user-details';
 }

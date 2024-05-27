@@ -22,7 +22,6 @@ import {getEnumArray} from "../../../shared/helpers";
   styleUrls: ['./add-car.component.scss']
 })
 export class AddCarComponent {
-  @Output() newItemEvent = new EventEmitter<string>();
   title: String;
   addCarForm: FormGroup;
   brands = getEnumArray(Brand, BrandDisplayNames);

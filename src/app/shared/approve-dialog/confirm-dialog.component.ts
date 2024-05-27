@@ -1,18 +1,18 @@
 import {Component, EventEmitter, Inject, Output} from '@angular/core';
-import {AppColors} from "../../../shared/colors";
+import {AppColors} from "../colors";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {DialogData} from "../../bookings-overview/bookings-overview.component";
+import {DialogData} from "../../components/bookings-overview/bookings-overview.component";
 
 @Component({
   selector: 'app-delete-user',
-  templateUrl: './delete-car.component.html',
-  styleUrls: ['./delete-car.component.scss']
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss']
 })
-export class DeleteCarComponent {
+export class ConfirmDialogComponent {
   title: String;
 
   constructor(
-    public dialogRef: MatDialogRef<DeleteCarComponent>,
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
     this.title = data.title;

@@ -13,7 +13,7 @@ import {AddRatingComponent} from "./add-rating/add-rating.component";
 import {RatingEndpointApi} from "../../api-client/endpoint/rating-endpoint-api";
 import {BookingEndpointApi} from "../../api-client/endpoint/booking-endpoint-api";
 import {convertToCamelCase} from "../../shared/helpers";
-import {ChangeStatusComponent} from "./change-status/change-status.component";
+import {ConfirmDialogComponent} from "../../shared/approve-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-bookings-overview',
@@ -104,34 +104,21 @@ export class BookingsOverviewComponent implements OnInit {
   }
 
   openChangeStatusDialog(booking: Booking): void {
-    const dialogRef = this.dialog.open(ChangeStatusComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',
       height: '200px',
-      data: {title: 'Are you sure you want to cancel this booking?', booking: booking}
+      data: {title: 'Are you sure you want to cancel this booking?'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        let canceledBooking: Booking = {
-          id: booking.id,
-          bookingStatus: BookingStatus.Canceled,
-          email: booking.email,
-          endDate: booking.endDate,
-          lastName: booking.lastName,
-          name: booking.name,
-          phone: booking.phone,
-          startDate: booking.startDate,
-          total: booking.total,
-          rating: booking.rating,
-          timeStamp: booking.timeStamp,
-          car: booking.car,
-          user: booking.user,
-        }
+        let canceledBooking = booking;
+        canceledBooking.bookingStatus = BookingStatus.Canceled;
         this.rentCarEndpoint.updateBooking(canceledBooking).subscribe(
           () => {
             this.snackBar.open('The booking was cancelled!', 'Close', {
               duration: 1500,
-              panelClass: ["warning-snackbar"]
+              panelClass: ["success-snackbar"]
             });
             this.fetchBookings();
           },

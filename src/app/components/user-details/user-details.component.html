@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="m-2 d-flex justify-content-center">
+    <mat-card class="px-4" *ngIf="!editMode" [style.background-color]="AppColors.darkGrayColor">
+      <mat-card-header>
+        <mat-card-title>Edit User</mat-card-title>
+        <mat-card-subtitle>{{ user.name }} {{ user.lastName }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <mat-icon>email</mat-icon>
+          {{ user.email }}
+        </p>
+        <p>
+          <mat-icon>phone</mat-icon>
+          {{ user.phone }}
+        </p>
+        <p>
+          <mat-icon>person</mat-icon>
+          {{ user.username }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" (click)="this.editMode = true">Edit Profile</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card style="width: 500px;" *ngIf="editMode" [style.background-color]="AppColors.darkGrayColor">
+      <mat-card-header>
+        <mat-card-title>Edit user profile</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="d-flex justify-content-center">
+        <form [formGroup]="profileEditForm" (ngSubmit)="saveProfileChanges()">
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="profileEditForm.get('name')?.hasError('required')">Name can not be empty!</mat-error>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="lastName">
+            <mat-error *ngIf="profileEditForm.get('lastName')?.hasError('required')">Last name can not be empty!
+            </mat-error>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-error *ngIf="profileEditForm.get('email')?.hasError('required')">Email can not be empty!</mat-error>
+            <mat-error *ngIf="profileEditForm.get('email')?.hasError('email')">Please enter a valid email!</mat-error>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Phone number</mat-label>
+            <input matInput formControlName="phone">
+            <mat-error *ngIf="profileEditForm.get('phone')?.hasError('required')">Phone number can not be empty!
+            </mat-error>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username">
+            <mat-error *ngIf="profileEditForm.get('username')?.hasError('pattern')">Username must be at least 8
+              characters long
+              and contain only letters and numbers
+            </mat-error>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-error *ngIf="profileEditForm.get('password')?.hasError('pattern')">Password must be at least 8
+              characters long and contain uppercase and lowercase letters, numbers and special characters
+            </mat-error>
+          </mat-form-field>
+
+          <br><br><br><br><br><br>
+          <button mat-raised-button [disabled]="profileEditForm.invalid" color="accent" type="submit">
+            <mat-icon class="me-1">save</mat-icon>
+            Save
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -7,7 +7,7 @@ import {MatSort, Sort} from "@angular/material/sort";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
-import {DeleteCarComponent} from "./delete-car/delete-car.component";
+import {ConfirmDialogComponent} from "../../shared/approve-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {RoutesPath} from "../../shared/routes";
@@ -104,7 +104,7 @@ export class AdminCarTableComponent implements OnInit {
   }
 
   openDeleteCarDialog(car: Car): void {
-    const dialogRef = this.dialog.open(DeleteCarComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',
       height: '200px',
       data: {title: 'Are you sure you want to delete this car?', car: car}
