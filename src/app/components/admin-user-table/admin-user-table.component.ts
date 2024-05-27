@@ -106,7 +106,12 @@ export class AdminUserTableComponent implements OnInit {
   }
 
   navigateToUserDetails(userId: number) {
-    this.router.navigate([RoutesPath.userDetails], {queryParams: {userId: userId}});
+    if (this.loggedInUser.id == userId) {
+      this.router.navigate([RoutesPath.profile]);
+
+    } else {
+      this.router.navigate([RoutesPath.userDetails], {queryParams: {userId: userId}});
+    }
   }
 
   openDeleteUserDialog(user: User): void {

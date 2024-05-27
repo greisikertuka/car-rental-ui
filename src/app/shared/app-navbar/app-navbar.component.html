@@ -1,18 +1,27 @@
 <mat-toolbar [style.background-color]="AppColors.darkBlueColor">
   <a [routerLink]=RoutesPath.home class="text-light" style="text-decoration: none;">
-    <img width="25" height="25" class="me-2 mb-1" src="assets/images/bmw.svg" alt="BMW">Car Rental</a>
+    <img width="25" height="25" class="me-2 mb-1" ngSrc="assets/images/bmw.svg" alt="BMW">Car Rental</a>
   <span style="flex: 1 1 auto;"></span>
 
   <span *ngIf="role == Role.Admin">
      <a mat-button [routerLink]="RoutesPath.adminDashboard" class="text-light px-2" style="text-decoration: none;">
-    <mat-icon class="me-1">supervisor_account</mat-icon>Admin section
+    <mat-icon class="me-1">admin_panel_settings</mat-icon>Admin section
+     </a>
+     <a mat-button [routerLink]="RoutesPath.adminUserTable" class="text-light px-2" style="text-decoration: none;">
+    <mat-icon class="me-1">group</mat-icon>Users Table
+     </a>
+     <a mat-button [routerLink]="RoutesPath.adminCarTable" class="text-light px-2" style="text-decoration: none;">
+    <mat-icon class="me-1">directions_car</mat-icon>Cars Table
      </a>
   </span>
 
+  <span *ngIf="role == Role.User">
+     <a mat-button [routerLink]="RoutesPath.bookingsOverview" class="text-light px-2" style="text-decoration: none;">
+  <mat-icon class="me-1">list</mat-icon>Bookings Overview
+</a>
+  </span>
+
   <span *ngIf="loggedIn">
-    <a mat-button [routerLink]="RoutesPath.bookingsOverview" class="text-light px-2" style="text-decoration: none;">
-    <mat-icon class="me-1">list</mat-icon>Bookings Overview
-    </a>
     <a mat-button [routerLink]="RoutesPath.profile" class="text-light px-2" style="text-decoration: none;">
     <mat-icon class="me-1">account_box</mat-icon>Profile
     </a>

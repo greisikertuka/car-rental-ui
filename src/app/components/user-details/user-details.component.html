@@ -20,7 +20,7 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="accent" (click)="this.editMode = true">Edit Profile</button>
+        <button mat-raised-button color="accent" (click)="editMode = true">Edit Profile</button>
       </mat-card-actions>
     </mat-card>
     <mat-card style="width: 500px;" *ngIf="editMode" [style.background-color]="AppColors.darkGrayColor">
@@ -63,8 +63,7 @@
             <mat-label>Username</mat-label>
             <input matInput formControlName="username">
             <mat-error *ngIf="profileEditForm.get('username')?.hasError('pattern')">Username must be at least 8
-              characters long
-              and contain only letters and numbers
+              characters long and contain only letters and numbers
             </mat-error>
           </mat-form-field>
           <br>

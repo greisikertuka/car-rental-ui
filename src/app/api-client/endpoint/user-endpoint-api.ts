@@ -34,6 +34,11 @@ export class UserEndpointApi {
   }
 
   updateProfile(user: User): Observable<any> {
+    const url = `${this.baseUrl}/updateOwnProfile`;
+    return this.http.put<any>(url, user, this.authService.getHttpOptions(this.tokenSubject));
+  }
+
+  updateUser(user: User): Observable<any> {
     const url = `${this.baseUrl}/update`;
     return this.http.put<any>(url, user, this.authService.getHttpOptions(this.tokenSubject));
   }

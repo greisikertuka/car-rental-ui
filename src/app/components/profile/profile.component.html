@@ -21,7 +21,7 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="accent" (click)="this.editMode = true">Edit Profile</button>
+        <button mat-raised-button color="accent" (click)="editMode = true">Edit Profile</button>
       </mat-card-actions>
     </mat-card>
     <mat-card style="width: 500px;" *ngIf="editMode" [style.background-color]="AppColors.darkGrayColor">
