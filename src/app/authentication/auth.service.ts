@@ -18,10 +18,6 @@ export class AuthService {
   user$ = this.userSubject.asObservable();
 
   constructor(private cookieService: CookieService) {
-    this.initialize();
-  }
-
-  private initialize(): void {
     this.tokenFromCookies = this.cookieService.get('token');
     if (this.tokenFromCookies) {
       this.getUserDetails(this.tokenFromCookies);
