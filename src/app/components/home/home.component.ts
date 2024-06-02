@@ -10,15 +10,29 @@ import {AppColors} from "../../shared/colors";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  fetchedCars?: Car[];
   cars?: Car[];
+  searchQuery: string = '';
+
+  submitSearch(): void {
+    this.cars = this.fetchedCars?.filter((car) => car.brand.toString().toLowerCase().includes(this.searchQuery.toLowerCase()) || car.model.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.cars = this.fetchedCars;
+  }
 
   constructor(private carEndpointApi: CarEndpointApi, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
     this.carEndpointApi.getAllCars().subscribe(
-      (response: Car[]) =>
-        this.cars = response,
+      (response: Car[]) => {
+        this.fetchedCars = response;
+        this.cars = this.fetchedCars;
+      },
+
       () =>
         this.snackBar.open(`Error while loading cars!`, 'Close', {
           duration: 1500,
