@@ -5,8 +5,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {AppColors} from "../../shared/colors";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
-import {passwordValidator, usernameValidator} from "../../shared/helpers";
-import {UserProfileEndpointApi} from "../../api-client/endpoint/upload-endpoint-api";
+import {convertToCamelCase, passwordValidator, usernameValidator} from "../../shared/helpers";
+import {FileEndpointApi} from "../../api-client/endpoint/file-endpoint-api";
 
 @Component({
   selector: 'app-profile',
@@ -18,14 +18,15 @@ export class ProfileComponent implements OnInit {
   editMode: boolean = false;
   profileEditForm!: FormGroup;
   profileForm!: FormGroup;
-  token: string | undefined = '';
   selectedFile: File | null = null;
+  token: string | undefined = '';
+  profilePictureSrc: string | undefined;
 
   constructor(private authService: AuthService,
               private snackBar: MatSnackBar,
               private fb: FormBuilder,
               private userEndpointApi: UserEndpointApi,
-              private userProfileEndpointApi: UserProfileEndpointApi) {
+              private fileEndpointApi: FileEndpointApi) {
   }
 
   ngOnInit(): void {
@@ -36,6 +37,13 @@ export class ProfileComponent implements OnInit {
         panelClass: ["error-snackbar"]
       })
     );
+    this.fileEndpointApi.getUserPicture(this.user.id!).subscribe(blob => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.profilePictureSrc = reader.result as string;
+      };
+      reader.readAsDataURL(blob);
+    });
     this.profileEditForm = this.fb.group({
       name: [this.user.name, Validators.required],
       lastName: [this.user.lastName, Validators.required],
@@ -49,10 +57,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  /*onFileSelected(event: any): void {
+  onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+      this.profileForm.patchValue({
+        file: file
+      });
+      this.profileForm.get('file')?.updateValueAndValidity();
     }
   }
 
@@ -60,24 +72,27 @@ export class ProfileComponent implements OnInit {
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('file', this.selectedFile, this.selectedFile.name);
-      this.userProfileEndpointApi.uploadProfilePicture(this.user.id!, formData).subscribe(
-        () => {
-          this.snackBar.open('Profile picture was uploaded successfully!', 'Close', {
+      formData.append('fileName', this.selectedFile.name);
+
+      console.log('FormData:', formData.get('file'), formData.get('fileName'));
+
+      this.fileEndpointApi.uploadProfilePicture(this.user.id!, formData).subscribe(
+        response => {
+          this.snackBar.open(response['message'], 'Close', {
             duration: 1500,
             panelClass: ['success-snackbar']
           });
-          // Reset the form after successful upload if needed
           this.profileForm.reset();
         },
-        error => {
-          this.snackBar.open(error.error.toString(), 'Close', {
+        () => {
+          this.snackBar.open('Error when uploading file', 'Close', {
             duration: 1500,
             panelClass: ['error-snackbar']
           });
         }
       );
     }
-  }*/
+  }
 
   saveProfileChanges() {
     this.user = {
@@ -127,4 +142,5 @@ export class ProfileComponent implements OnInit {
   }
 
   protected readonly AppColors = AppColors;
+  protected readonly convertToCamelCase = convertToCamelCase;
 }

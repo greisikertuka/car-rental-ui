@@ -15,24 +15,35 @@
             <p>Seats: {{ car.seats }}</p>
             <p>Year: {{ car.year }}</p>
             <p>License Plate: {{ car.licencePlate }}</p>
-            <p>Price: <span style="border-radius: 6px" class="p-2 bg-success text-light">
-              {{ car.price }} $
-            </span></p>
+            <p>Price:
+              <span style="border-radius: 6px" class="p-2 bg-success text-light">
+            {{ car.price }} $
+          </span>
+            </p>
           </div>
-          <div class="col-md-6 m-auto">
-            <img ngSrc="assets/images/car.png" alt="Car {{ convertToCamelCase(car.brand || '') + ' ' + car.model }}"
-                 class="img-fluid"
-                 height="302" width="474">
+          <div *ngIf="thumbnailSrc" class="col-md-6 d-flex justify-content-center align-items-center">
+            <div class="thumbnail-container">
+              <img [src]="thumbnailSrc" alt="Car {{ convertToCamelCase(car.brand || '') + ' ' + car.model }}"
+                   class="thumbnail-image img-fluid">
+            </div>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
+
     <mat-card style="width: 500px;" *ngIf="editMode" [style.background-color]="AppColors.darkGrayColor">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
         <mat-card-title>Edit car</mat-card-title>
       </mat-card-header>
       <mat-card-content class="d-flex justify-content-center">
+        <form [formGroup]="thumbnaimForm" (ngSubmit)="saveCarPicture()">
+          <input class="form-control" [style.background-color]="AppColors.darkBlueColor"
+                 [style.color]="AppColors.lightGrayColor" type="file"
+                 (change)="onFileSelected($event)" accept="image/*"/><br>
+          <button mat-raised-button color="primary" type="submit">Upload</button>
+        </form>
+        <br><br>
         <form [formGroup]="carEditForm" (ngSubmit)="saveCarChanges()">
           <mat-form-field appearance="fill">
             <mat-label>Brand</mat-label>

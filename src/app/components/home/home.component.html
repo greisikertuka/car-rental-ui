@@ -2,8 +2,8 @@
   <div class="p-2">
     <h2 class="col screen-header">Cars Overview</h2>
     <div class="col">
-      <mat-form-field>
-        <input matInput placeholder="Search" [(ngModel)]="searchQuery"  (input)="submitSearch()">
+      <mat-form-field style="width:250px">
+        <input matInput placeholder="Search" [(ngModel)]="searchQuery" (input)="submitSearch()">
         <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
           <mat-icon>clear</mat-icon>
         </button>

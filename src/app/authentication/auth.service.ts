@@ -56,11 +56,13 @@ export class AuthService {
     };
   }
 
-  getHttpOptions(): { headers: HttpHeaders } {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+  getHttpOptions(isMultipart: boolean = false): { headers: HttpHeaders } {
+    let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.tokenSubject.getValue()}`
     });
+    if (!isMultipart) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
     return {headers};
   }
 }

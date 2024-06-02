@@ -20,6 +20,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {convertToCamelCase, getEnumArray} from "../../shared/helpers";
 import {AuthService} from "../../authentication/auth.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FileEndpointApi} from "../../api-client/endpoint/file-endpoint-api";
 
 @Component({
   selector: 'app-car-details',
@@ -34,15 +35,19 @@ export class CarDetailsComponent implements OnInit {
   carEditForm!: FormGroup;
   brands = getEnumArray(Brand, BrandDisplayNames);
   colors = getEnumArray(Color, ColorDisplayNames);
-  fuelTypes = getEnumArray(FuelType, FuelTypeDisplayNames)
-  transmissionTypes = getEnumArray(Transmission, TransmissionDisplayNames)
+  fuelTypes = getEnumArray(FuelType, FuelTypeDisplayNames);
+  transmissionTypes = getEnumArray(Transmission, TransmissionDisplayNames);
+  thumbnaimForm!: FormGroup;
+  selectedFile: File | null = null;
+  thumbnailSrc: string | undefined;
 
   constructor(private route: ActivatedRoute,
               private carEndpointApi: CarEndpointApi,
               private snackBar: MatSnackBar,
               private router: Router,
               private authService: AuthService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private fileEndpointApi: FileEndpointApi) {
   }
 
   ngOnInit(): void {
@@ -64,7 +69,14 @@ export class CarDetailsComponent implements OnInit {
           duration: 1500,
           panelClass: ["error-snackbar"]
         })
-    )
+    );
+    this.fileEndpointApi.getCarPicture(this.carId).subscribe(blob => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.thumbnailSrc = reader.result as string;
+      };
+      reader.readAsDataURL(blob);
+    });
     this.carEditForm = this.fb.group({
       model: ['', Validators.required],
       brand: ['', Validators.required],
@@ -78,6 +90,44 @@ export class CarDetailsComponent implements OnInit {
       licencePlate: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]]
     });
+    this.thumbnaimForm = this.fb.group({
+      file: [null, Validators.required]
+    });
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.thumbnaimForm.patchValue({
+        file: file
+      });
+      this.thumbnaimForm.get('file')?.updateValueAndValidity();
+    }
+  }
+
+  saveCarPicture(): void {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+      formData.append('fileName', this.selectedFile.name);
+
+      this.fileEndpointApi.uploadCarPicture(this.car.id!, formData).subscribe(
+        response => {
+          this.snackBar.open(response['message'], 'Close', {
+            duration: 1500,
+            panelClass: ['success-snackbar']
+          });
+          this.thumbnaimForm.reset();
+        },
+        () => {
+          this.snackBar.open('Error when uploading car picture', 'Close', {
+            duration: 1500,
+            panelClass: ['error-snackbar']
+          });
+        }
+      );
+    }
   }
 
   goToRentPage() {
