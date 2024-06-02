@@ -3,6 +3,7 @@ import {Car} from "../../../generated-code";
 import {Params, Router} from '@angular/router';
 import {RoutesPath} from "../../../shared/routes";
 import {AppColors} from "../../../shared/colors";
+import {convertToCamelCase} from "../../../shared/helpers";
 
 @Component({
   selector: 'app-car-card',
@@ -22,4 +23,5 @@ export class CarCardComponent {
 
   protected readonly Array = Array;
   protected readonly AppColors = AppColors;
+  protected readonly convertToCamelCase = convertToCamelCase;
 }

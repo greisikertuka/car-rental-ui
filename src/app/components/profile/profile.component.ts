@@ -6,6 +6,7 @@ import {AppColors} from "../../shared/colors";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
 import {passwordValidator, usernameValidator} from "../../shared/helpers";
+import {UserProfileEndpointApi} from "../../api-client/endpoint/upload-endpoint-api";
 
 @Component({
   selector: 'app-profile',
@@ -16,10 +17,15 @@ export class ProfileComponent implements OnInit {
   user!: User;
   editMode: boolean = false;
   profileEditForm!: FormGroup;
+  profileForm!: FormGroup;
   token: string | undefined = '';
+  selectedFile: File | null = null;
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              private fb: FormBuilder, private userEndpointApi: UserEndpointApi) {
+  constructor(private authService: AuthService,
+              private snackBar: MatSnackBar,
+              private fb: FormBuilder,
+              private userEndpointApi: UserEndpointApi,
+              private userProfileEndpointApi: UserProfileEndpointApi) {
   }
 
   ngOnInit(): void {
@@ -38,7 +44,40 @@ export class ProfileComponent implements OnInit {
       username: [this.user.username, usernameValidator()],
       password: ['', passwordValidator()],
     });
+    this.profileForm = this.fb.group({
+      file: [null, Validators.required]
+    });
   }
+
+  /*onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  saveProfilePicture(): void {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+      this.userProfileEndpointApi.uploadProfilePicture(this.user.id!, formData).subscribe(
+        () => {
+          this.snackBar.open('Profile picture was uploaded successfully!', 'Close', {
+            duration: 1500,
+            panelClass: ['success-snackbar']
+          });
+          // Reset the form after successful upload if needed
+          this.profileForm.reset();
+        },
+        error => {
+          this.snackBar.open(error.error.toString(), 'Close', {
+            duration: 1500,
+            panelClass: ['error-snackbar']
+          });
+        }
+      );
+    }
+  }*/
 
   saveProfileChanges() {
     this.user = {

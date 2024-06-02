@@ -89,16 +89,12 @@ export class BookingsOverviewComponent implements OnInit {
 
   openViewRatingDialog(booking: Booking): void {
     this.dialog.open(ViewRatingDialogComponent, {
-      width: '350px',
-      height: '350px',
       data: {title: 'View Rating', booking: booking}
     });
   }
 
   openAddRatingDialog(booking: Booking): void {
     const dialogRef = this.dialog.open(AddRatingComponent, {
-      width: '400px',
-      height: '450px',
       data: {title: 'Add Rating', booking: booking}
     });
 
@@ -123,8 +119,6 @@ export class BookingsOverviewComponent implements OnInit {
 
   openCancelBookingDialog(booking: Booking): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      height: '200px',
       data: {title: 'Are you sure you want to cancel this booking?'}
     });
 
@@ -150,14 +144,16 @@ export class BookingsOverviewComponent implements OnInit {
 
   openAcceptBookingDialog(booking: Booking): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      height: '200px',
-      data: {title: 'Do you want to approve this booking?'}
+      data: {title: `Do you want to ${booking.bookingStatus == BookingStatus.Pending ? 'activate' : 'complete'} this booking?`}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        booking.bookingStatus = BookingStatus.Active;
+        if (booking.bookingStatus == BookingStatus.Pending) {
+          booking.bookingStatus = BookingStatus.Active;
+        } else {
+          booking.bookingStatus = BookingStatus.Completed;
+        }
         this.bookingEndpointApi.updateBooking(booking).subscribe(
           () => {
             this.snackBar.open('Booking was approved!', 'Close', {
@@ -177,8 +173,6 @@ export class BookingsOverviewComponent implements OnInit {
 
   openDeleteBookingDialog(booking: Booking): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      height: '200px',
       data: {title: 'Are you sure you want to delete this booking?'}
     });
 
@@ -204,6 +198,7 @@ export class BookingsOverviewComponent implements OnInit {
   protected readonly AppColors = AppColors;
   protected readonly convertToCamelCase = convertToCamelCase;
   protected readonly Role = Role;
+  protected readonly BookingStatus = BookingStatus;
 }
 
 export interface DialogData {

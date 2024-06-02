@@ -5,19 +5,19 @@
 
   <span *ngIf="role == Role.Admin">
      <a mat-button [routerLink]="RoutesPath.adminDashboard" class="text-light px-2" style="text-decoration: none;">
-    <mat-icon class="me-1">admin_panel_settings</mat-icon>Admin section
+    <mat-icon class="me-1">admin_panel_settings</mat-icon>Admin
      </a>
      <a mat-button [routerLink]="RoutesPath.adminUserTable" class="text-light px-2" style="text-decoration: none;">
-    <mat-icon class="me-1">group</mat-icon>Users Table
+    <mat-icon class="me-1">group</mat-icon>Users
      </a>
      <a mat-button [routerLink]="RoutesPath.adminCarTable" class="text-light px-2" style="text-decoration: none;">
-    <mat-icon class="me-1">directions_car</mat-icon>Cars Table
+    <mat-icon class="me-1">directions_car</mat-icon>Cars
      </a>
   </span>
 
   <span *ngIf="loggedIn">
      <a mat-button [routerLink]="RoutesPath.bookingsOverview" class="text-light px-2" style="text-decoration: none;">
-  <mat-icon class="me-1">list</mat-icon><span *ngIf="role==Role.Admin">Manage Bookings</span><span
+  <mat-icon class="me-1">list</mat-icon><span *ngIf="role==Role.Admin">Bookings</span><span
        *ngIf="role == Role.User">My Bookings</span>
     </a>
     <a mat-button [routerLink]="RoutesPath.profile" class="text-light px-2" style="text-decoration: none;">

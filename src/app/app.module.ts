@@ -12,7 +12,7 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {RentComponent} from './components/rent/rent.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClientModule} from "@angular/common/http";
-import {CarCardComponent} from './components/car-details/car-card/car-card.component';
+import {CarCardComponent} from './components/home/car-card/car-card.component';
 import {NgOptimizedImage} from "@angular/common";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
@@ -50,6 +50,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {UserDetailsComponent} from './components/user-details/user-details.component';
 import {AddUserComponent} from './components/admin-user-table/add-user/add-user.component';
 import {CookieService} from "ngx-cookie-service";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import {CookieService} from "ngx-cookie-service";
     MatSortModule,
     MatTooltipModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule
   ],
   providers: [
     MatDatepickerModule,

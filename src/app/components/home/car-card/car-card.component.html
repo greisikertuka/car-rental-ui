@@ -1,0 +1,35 @@
+<mat-card [style.background-color]="AppColors.darkGrayColor" class="car-card">
+  <mat-card-header>
+    <mat-card-title class="car-title">
+      <div>
+        {{ convertToCamelCase(car.brand || '') + ' ' + car.model }}
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <div>
+        <span *ngFor="let index of Array.from([0,1,2,3,4])">
+          <span *ngIf="(car.averageRating ?? 0) > index">
+                       <i class="star-icon bi bi-star-fill"></i>
+          </span>
+          <span *ngIf="(car.averageRating ?? 0) <= index">
+                        <i class="star-icon bi bi-star"></i>
+          </span>
+         </span>
+      </div>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="mt-2">
+      {{ car.year }}
+    </div>
+    <img mat-card-image src="../../../../assets/images/car.png"
+         alt="Car {{convertToCamelCase(car.brand || '') + ' ' + car.model}}"
+         class="my-2 img-fluid rounded border border-light">
+    <div class="car-color">
+      {{ car.color }}
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="accent" (click)="goToCarDetails()">Details</button>
+  </mat-card-actions>
+</mat-card>

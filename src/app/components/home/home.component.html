@@ -1,11 +1,13 @@
-<div class="container-fluid p-4 bg-secondary">
-  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
-    <ng-container *ngFor="let car of cars">
-      <div class="col">
-        <app-car-card
-          [car]=car
-        ></app-car-card>
-      </div>
-    </ng-container>
+<div class="container-fluid bg-secondary">
+  <div class="p-2">
+    <h2 class="screen-header">Cars Overview</h2>
+    <div class="row row-cols-auto">
+      <ng-container *ngFor="let car of cars">
+        <div class="col mb-4">
+          <app-car-card [car]=car>
+          </app-car-card>
+        </div>
+      </ng-container>
+    </div>
   </div>
 </div>

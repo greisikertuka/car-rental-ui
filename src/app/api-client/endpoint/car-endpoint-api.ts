@@ -32,4 +32,9 @@ export class CarEndpointApi {
     const url = `${this.baseUrl}/create`;
     return this.http.post<any>(url, car, this.authService.getHttpOptions());
   }
+
+  updateCar(car: Car): Observable<any> {
+    const url = `${this.baseUrl}/update`;
+    return this.http.put<any>(url, car, this.authService.getHttpOptions());
+  }
 }

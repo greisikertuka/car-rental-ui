@@ -12,6 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {RoutesPath} from "../../shared/routes";
 import {AddCarComponent} from "./add-car/add-car.component";
+import {convertToCamelCase} from "../../shared/helpers";
 
 @Component({
   selector: 'app-admin-car-table',
@@ -60,8 +61,6 @@ export class AdminCarTableComponent implements OnInit {
 
   openAddCarPopup() {
     const dialogRef = this.dialog.open(AddCarComponent, {
-      width: '400px',
-      height: '750px',
       data: {title: 'Add Car'}
     });
 
@@ -105,8 +104,6 @@ export class AdminCarTableComponent implements OnInit {
 
   openDeleteCarDialog(car: Car): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      height: '200px',
       data: {title: 'Are you sure you want to delete this car?', car: car}
     });
 
@@ -118,4 +115,5 @@ export class AdminCarTableComponent implements OnInit {
   }
 
   protected readonly AppColors = AppColors;
+    protected readonly convertToCamelCase = convertToCamelCase;
 }

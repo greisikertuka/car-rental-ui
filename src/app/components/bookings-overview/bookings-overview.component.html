@@ -65,34 +65,35 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions</th>
             <td mat-cell *matCellDef="let booking">
-              <span *ngIf="user.role == Role.User">
+              <span class="row" *ngIf="user.role == Role.User">
               <button (click)="openViewRatingDialog(booking)"
-                      *ngIf="(booking.bookingStatus.toString() == 'COMPLETED' && booking.rating != null && true)"
+                      *ngIf="(booking.bookingStatus == BookingStatus.Completed && booking.rating != null && true)"
                       matTooltip="View Rating"
                       mat-icon-button>
                 <mat-icon color="accent">open_in_full</mat-icon>
               </button>
               <button (click)="openAddRatingDialog(booking)"
-                      *ngIf="(booking.bookingStatus.toString() == 'COMPLETED' && booking.rating == null || false)"
+                      *ngIf="(booking.bookingStatus == BookingStatus.Completed && booking.rating == null || false)"
                       matTooltip="Leave Rating" mat-icon-button>
                 <mat-icon color="accent">grade</mat-icon>
               </button>
-              <button (click)="openCancelBookingDialog(booking)" *ngIf="(booking.bookingStatus.toString() == 'PENDING')"
+              <button (click)="openCancelBookingDialog(booking)"
+                      *ngIf="(booking.bookingStatus == BookingStatus.Pending)"
                       matTooltip="Cancel Booking" color="accent"
                       mat-icon-button>
                 <mat-icon>cancel</mat-icon>
               </button>
               </span>
 
-              <span *ngIf="user.role == Role.Admin">
+              <span class="row" *ngIf="user.role == Role.Admin">
                  <button (click)="openAcceptBookingDialog(booking)"
-                         *ngIf="(booking.bookingStatus.toString() == 'PENDING')"
-                         matTooltip="Accept"
+                         *ngIf="(booking.bookingStatus == BookingStatus.Pending || booking.bookingStatus == BookingStatus.Active)"
+                         [matTooltip]="booking.bookingStatus == BookingStatus.Pending ? 'Activate' : 'Complete'"
                          mat-icon-button>
                 <mat-icon style="color: palegreen">done_outline</mat-icon>
               </button>
                  <button (click)="openCancelBookingDialog(booking)"
-                         *ngIf="(booking.bookingStatus.toString() == 'PENDING')"
+                         *ngIf="(booking.bookingStatus == BookingStatus.Pending)"
                          matTooltip="Cancel"
                          mat-icon-button>
                 <mat-icon color="warn">cancel</mat-icon>

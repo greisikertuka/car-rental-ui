@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Car} from "../../generated-code";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CarEndpointApi} from "../../api-client/endpoint/car-endpoint-api";
+import {AppColors} from "../../shared/colors";
 
 @Component({
   selector: 'app-home',
@@ -28,4 +29,5 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
+  protected readonly AppColors = AppColors;
 }

@@ -66,8 +66,6 @@ export class AdminUserTableComponent implements OnInit {
 
   openAddUserPopup() {
     const dialogRef = this.dialog.open(AddUserComponent, {
-      width: '400px',
-      height: '750px',
       data: {title: 'Add User'}
     });
 
@@ -116,8 +114,6 @@ export class AdminUserTableComponent implements OnInit {
 
   openDeleteUserDialog(user: User): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      height: '200px',
       data: {title: 'Are you sure you want to delete this user?', user: user}
     });
 

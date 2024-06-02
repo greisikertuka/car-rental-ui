@@ -1,0 +1,21 @@
+.car-card {
+  width: 250px;
+  height: 335px;
+}
+
+.car-title {
+  overflow: clip;
+  white-space: nowrap;
+  width: 220px;
+  height: 40px;
+  text-overflow: ellipsis;
+}
+
+.star-icon {
+  color: #e7d35f;
+  font-size: 20px;
+}
+
+.car-color {
+  font-weight: 600;
+}
