@@ -26,6 +26,11 @@
             <td mat-cell *matCellDef="let car"> {{ convertToCamelCase(car.brand || '') }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="model">
+            <th mat-header-cell *matHeaderCellDef> Model</th>
+            <td mat-cell *matCellDef="let car"> {{ car.model }}</td>
+          </ng-container>
+
           <ng-container matColumnDef="fuelType">
             <th mat-header-cell *matHeaderCellDef> Fuel Type</th>
             <td mat-cell *matCellDef="let car"> {{ car.fuelType }}</td>

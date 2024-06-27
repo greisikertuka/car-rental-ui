@@ -5,9 +5,9 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {RoutesPath} from "../../shared/routes";
 import {AppColors} from "../../shared/colors";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
-import {FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Role} from "../../generated-code";
-import {formWidth, passwordValidator, usernameValidator} from "../../shared/helpers";
+import {formWidth, passwordValidator, phoneNumberValidator, usernameValidator} from "../../shared/helpers";
 
 @Component({
   selector: 'app-login',
@@ -34,10 +34,12 @@ export class LoginComponent implements OnInit {
     });
 
     this.signUpForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(20)]],
+      father: ['', [Validators.required, Validators.maxLength(20)]],
+      birthday: [null, Validators.required],
+      lastName: ['', [Validators.required, Validators.maxLength(20)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      phone: ['', phoneNumberValidator()],
       username: ['', usernameValidator()],
       password: ['', passwordValidator()]
     });
@@ -84,7 +86,9 @@ export class LoginComponent implements OnInit {
   signUp(): void {
     this.userEndpointApi.signUp({
       name: this.signUpForm.value['name'],
+      father: this.signUpForm.value['father'],
       lastName: this.signUpForm.value['lastName'],
+      birthday: this.signUpForm.value['birthday'],
       email: this.signUpForm.value['email'],
       phone: this.signUpForm.value['phone'],
       username: this.signUpForm.value['username'],

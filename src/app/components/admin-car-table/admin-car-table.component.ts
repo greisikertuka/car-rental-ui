@@ -21,7 +21,7 @@ import {convertToCamelCase} from "../../shared/helpers";
 })
 export class AdminCarTableComponent implements OnInit {
   cars: Car[] = [];
-  displayedColumns: string[] = ['id', 'brand', 'fuelType', 'transmission', 'year', 'averageRating', 'price', 'actions'];
+  displayedColumns: string[] = ['id', 'brand', 'model', 'fuelType', 'transmission', 'year', 'averageRating', 'price', 'actions'];
   dataSource: MatTableDataSource<Car> = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -115,5 +115,5 @@ export class AdminCarTableComponent implements OnInit {
   }
 
   protected readonly AppColors = AppColors;
-    protected readonly convertToCamelCase = convertToCamelCase;
+  protected readonly convertToCamelCase = convertToCamelCase;
 }

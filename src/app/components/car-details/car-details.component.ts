@@ -28,7 +28,7 @@ import {FileEndpointApi} from "../../api-client/endpoint/file-endpoint-api";
   styleUrls: ['./car-details.component.scss']
 })
 export class CarDetailsComponent implements OnInit {
-  user!: User;
+  user?: User | null;
   carId!: number;
   car!: Car;
   editMode: boolean = false;
@@ -55,7 +55,7 @@ export class CarDetailsComponent implements OnInit {
       this.carId = +params['carId'];
     });
     this.authService.user$.subscribe(
-      user => this.user = user!,
+      user => this.user = user,
       () => this.snackBar.open('There was an error when getting the user!', 'Close', {
         duration: 1500,
         panelClass: ["error-snackbar"]

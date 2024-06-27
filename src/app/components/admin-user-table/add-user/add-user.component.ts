@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {getEnumArray, passwordValidator, usernameValidator} from "../../../shared/helpers";
+import {getEnumArray, passwordValidator, phoneNumberValidator, usernameValidator} from "../../../shared/helpers";
 import {Role, RoleDisplayNames, User} from "../../../generated-code";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../bookings-overview/bookings-overview.component";
@@ -24,10 +24,12 @@ export class AddUserComponent {
     this.title = data.title;
 
     this.addUserForm = this.fb.group({
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(20)]],
+      lastName: ['', [Validators.required, Validators.maxLength(20)]],
+      father: ['', [Validators.required, Validators.maxLength(20)]],
+      birthday: [null, Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      phone: ['', phoneNumberValidator()],
       username: ['', usernameValidator()],
       password: ['', passwordValidator()],
       role: ['', Validators.required],
@@ -39,6 +41,8 @@ export class AddUserComponent {
       let user: User = {
         name: this.addUserForm.value['name'],
         lastName: this.addUserForm.value['lastName'],
+        father: this.addUserForm.value['father'],
+        birthday: this.addUserForm.value['birthday'],
         email: this.addUserForm.value['email'],
         phone: this.addUserForm.value['phone'],
         username: this.addUserForm.value['username'],

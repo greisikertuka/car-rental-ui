@@ -28,10 +28,23 @@
       </mat-form-field>
       <br>
       <mat-form-field appearance="fill">
+        <mat-label>Father Name</mat-label>
+        <input matInput formControlName="father" placeholder="Enter your father name" name="father" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
         <mat-label>Last Name</mat-label>
         <input matInput formControlName="lastName" placeholder="Enter your last name" name="lastName" required>
       </mat-form-field>
       <br>
+      <mat-form-field>
+        <mat-label>Birthday</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthday">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" placeholder="Enter your email" name="email" required>

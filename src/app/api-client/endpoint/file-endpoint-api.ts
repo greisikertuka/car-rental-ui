@@ -27,7 +27,7 @@ export class FileEndpointApi {
   getCarPicture(carId: number): Observable<any> {
     const url = `${this.baseUrl}/cars/${carId}/thumbnail`;
     return this.http.get(url, {
-      ...this.authService.getHttpOptions(true), responseType: 'blob'
+      responseType: 'blob'
     });
   }
 

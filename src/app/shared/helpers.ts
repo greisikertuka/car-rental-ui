@@ -1,5 +1,5 @@
 import {RoutesPath} from "./routes";
-import {ValidatorFn, Validators} from "@angular/forms";
+import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
 
 export const userRoutes = [RoutesPath.rent, RoutesPath.profile, RoutesPath.bookingsOverview, RoutesPath.pageNotFound];
 export const adminRoutes = [RoutesPath.adminDashboard, RoutesPath.adminCarTable, RoutesPath.adminUserTable, RoutesPath.userDetails];
@@ -18,14 +18,29 @@ export function convertToCamelCase(value: String): String {
 
 export function usernameValidator(): ValidatorFn {
   const usernameRegex = /^[a-zA-Z0-9]{8,}$/;
-  return Validators.pattern(usernameRegex);
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valid = usernameRegex.test(control.value);
+    return valid ? null : {invalidUsername: true};
+  };
 }
 
 export function passwordValidator(): ValidatorFn {
   // At least one uppercase, one lowercase, one number, one special character, and at least 8 characters long
   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-  return Validators.pattern(passwordRegex);
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valid = passwordRegex.test(control.value);
+    return valid ? null : {invalidPassword: true};
+  };
 }
+
+export function phoneNumberValidator(): ValidatorFn {
+  const phoneNumberRegex = /^\+355(67|68|69)\d{7}$/;
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valid = phoneNumberRegex.test(control.value);
+    return valid ? null : {invalidPhoneNumber: true};
+  };
+}
+
 
 export function getEnumArray(enumType: any, enumDisplayNames: any): { value: string, viewValue: string }[] {
   return Object.keys(enumType).map(key => ({

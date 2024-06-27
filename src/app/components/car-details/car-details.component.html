@@ -139,9 +139,11 @@
         </form>
       </mat-card-content>
     </mat-card>
-    <button *ngIf="user.role == Role.User" mat-raised-button color="accent" class="mt-2" (click)="goToRentPage()">Rent
+    <button *ngIf="user == undefined || (user.role == Role.User)" mat-raised-button color="accent" class="mt-2"
+            (click)="goToRentPage()">Rent
     </button>
-    <button *ngIf="user.role == Role.Admin && !editMode" mat-raised-button color="accent" class="mt-2"
+    <button *ngIf="user != undefined && user.role == Role.Admin && !editMode" mat-raised-button color="accent"
+            class="mt-2"
             (click)="editMode = true">Edit
     </button>
   </div>
