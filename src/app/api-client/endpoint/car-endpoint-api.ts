@@ -37,4 +37,9 @@ export class CarEndpointApi {
     const url = `${this.baseUrl}/update`;
     return this.http.put<any>(url, car, this.authService.getHttpOptions());
   }
+
+  searchCars(query: string): Observable<Car[]> {
+    const url = `${this.baseUrl}/search`;
+    return this.http.get<Car[]>(url, {params: {query}});
+  }
 }

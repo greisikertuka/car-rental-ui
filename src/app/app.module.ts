@@ -53,29 +53,6 @@ import {CookieService} from "ngx-cookie-service";
 import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BookingsOverviewComponent,
-    CarDetailsComponent,
-    HomeComponent,
-    LoginComponent,
-    PageNotFoundComponent,
-    ProfileComponent,
-    RentComponent,
-    CarCardComponent,
-    AppNavbarComponent,
-    AppNavbarComponent,
-    AdminDashboardComponent,
-    ForbiddenComponent,
-    ViewRatingDialogComponent,
-    AddRatingComponent,
-    AdminUserTableComponent,
-    AdminCarTableComponent,
-    AddCarComponent,
-    ConfirmDialogComponent,
-    UserDetailsComponent,
-    AddUserComponent
-  ],
   imports: [
     BrowserModule,
     NgbModule,
@@ -109,12 +86,34 @@ import {MatGridListModule} from "@angular/material/grid-list";
     MatTooltipModule,
     MatDialogModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    // Standalone Components
+    AppComponent,
+    BookingsOverviewComponent,
+    CarDetailsComponent,
+    HomeComponent,
+    LoginComponent,
+    PageNotFoundComponent,
+    ProfileComponent,
+    RentComponent,
+    CarCardComponent,
+    AppNavbarComponent,
+    AdminDashboardComponent,
+    ForbiddenComponent,
+    ViewRatingDialogComponent,
+    AddRatingComponent,
+    AdminUserTableComponent,
+    AdminCarTableComponent,
+    AddCarComponent,
+    ConfirmDialogComponent,
+    UserDetailsComponent,
+    AddUserComponent
   ],
   providers: [
     MatDatepickerModule,
     MatNativeDateModule,
-    CookieService],
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

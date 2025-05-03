@@ -14,9 +14,30 @@ import {RatingEndpointApi} from "../../api-client/endpoint/rating-endpoint-api";
 import {BookingEndpointApi} from "../../api-client/endpoint/booking-endpoint-api";
 import {convertToCamelCase} from "../../shared/helpers";
 import {ConfirmDialogComponent} from "../../shared/approve-dialog/confirm-dialog.component";
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-bookings-overview',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatCardModule,
+    RouterLink
+  ],
   templateUrl: './bookings-overview.component.html',
   styleUrls: ['./bookings-overview.component.scss']
 })

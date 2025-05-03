@@ -13,9 +13,28 @@ import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {AddUserComponent} from "./add-user/add-user.component";
 import {ConfirmDialogComponent} from "../../shared/approve-dialog/confirm-dialog.component";
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user-table',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    RouterLink
+  ],
   templateUrl: './admin-user-table.component.html',
   styleUrls: ['./admin-user-table.component.scss']
 })

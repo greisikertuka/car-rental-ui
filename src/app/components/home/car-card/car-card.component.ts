@@ -4,11 +4,22 @@ import {Params, Router} from '@angular/router';
 import {RoutesPath} from "../../../shared/routes";
 import {AppColors} from "../../../shared/colors";
 import {convertToCamelCase} from "../../../shared/helpers";
+import {MatCardModule} from "@angular/material/card";
+import {MatButtonModule} from "@angular/material/button";
+import {RouterLink} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-car-card',
   templateUrl: './car-card.component.html',
-  styleUrls: ['./car-card.component.scss']
+  styleUrls: ['./car-card.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    RouterLink
+  ]
 })
 export class CarCardComponent {
   @Input() car!: Car;

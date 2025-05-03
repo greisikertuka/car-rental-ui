@@ -5,14 +5,28 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {RoutesPath} from "../../shared/routes";
 import {AppColors} from "../../shared/colors";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Role} from "../../generated-code";
 import {formWidth, passwordValidator, phoneNumberValidator, usernameValidator} from "../../shared/helpers";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatButtonModule} from "@angular/material/button";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatButtonModule
+  ]
 })
 export class LoginComponent implements OnInit {
 

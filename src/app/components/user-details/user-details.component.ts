@@ -1,16 +1,34 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../generated-code";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserEndpointApi} from "../../api-client/endpoint/user-endpoint-api";
 import {passwordValidator, phoneNumberValidator, usernameValidator} from "../../shared/helpers";
 import {AppColors} from "../../shared/colors";
 import {ActivatedRoute} from "@angular/router";
+import {MatCardModule} from "@angular/material/card";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.scss']
+  styleUrls: ['./user-details.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatIconModule,
+    MatButtonModule
+  ]
 })
 export class UserDetailsComponent implements OnInit {
   userId!: number;

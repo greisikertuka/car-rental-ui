@@ -1,17 +1,38 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {getEnumArray, passwordValidator, phoneNumberValidator, usernameValidator} from "../../../shared/helpers";
 import {Role, RoleDisplayNames, User} from "../../../generated-code";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../bookings-overview/bookings-overview.component";
 import {AppColors} from "../../../shared/colors";
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-user',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatDialogModule
+  ],
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.scss']
 })
-export class AddUserComponent {
+export class AddUserComponent implements OnInit {
   title: String;
   addUserForm: FormGroup;
   roles = getEnumArray(Role, RoleDisplayNames);
@@ -34,6 +55,9 @@ export class AddUserComponent {
       password: ['', passwordValidator()],
       role: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
   }
 
   save(): void {

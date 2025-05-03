@@ -5,15 +5,29 @@ import {AuthService} from "../../authentication/auth.service";
 import {BookingEndpointApi} from "../../api-client/endpoint/booking-endpoint-api";
 import {RoutesPath} from "../../shared/routes";
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AppColors} from "../../shared/colors";
 import {formWidth} from "../../shared/helpers";
 import {CarEndpointApi} from "../../api-client/endpoint/car-endpoint-api";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatButtonModule} from "@angular/material/button";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-rent',
   templateUrl: './rent.component.html',
   styleUrls: ['./rent.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatButtonModule
+  ]
 })
 export class RentComponent implements OnInit {
   constructor(
@@ -97,5 +111,4 @@ export class RentComponent implements OnInit {
         }
       );
   }
-
 }

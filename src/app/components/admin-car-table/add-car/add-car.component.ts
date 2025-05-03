@@ -1,4 +1,12 @@
-import {Component, EventEmitter, Inject, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Output, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
 import {
   Brand,
   BrandDisplayNames,
@@ -17,11 +25,22 @@ import {AppColors} from "../../../shared/colors";
 import {getEnumArray} from "../../../shared/helpers";
 
 @Component({
-  selector: 'app-add-user',
+  selector: 'app-add-car',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatCardModule
+  ],
   templateUrl: './add-car.component.html',
   styleUrls: ['./add-car.component.scss']
 })
-export class AddCarComponent {
+export class AddCarComponent implements OnInit {
   title: String;
   addCarForm: FormGroup;
   brands = getEnumArray(Brand, BrandDisplayNames);
@@ -49,6 +68,9 @@ export class AddCarComponent {
       licencePlate: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]]
     });
+  }
+
+  ngOnInit(): void {
   }
 
   save(): void {

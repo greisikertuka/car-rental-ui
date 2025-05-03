@@ -4,12 +4,24 @@ import {AuthService} from "../../authentication/auth.service";
 import {RoutesPath} from "../routes";
 import {Role} from "../../generated-code";
 import {MatSnackBar} from "@angular/material/snack-bar";
-
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {RouterLink} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './app-navbar.component.html',
-  styleUrls: ['./app-navbar.component.scss']
+  styleUrls: ['./app-navbar.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink
+  ]
 })
 export class AppNavbarComponent implements OnInit {
   ngOnInit(): void {

@@ -21,9 +21,30 @@ import {convertToCamelCase, getEnumArray} from "../../shared/helpers";
 import {AuthService} from "../../authentication/auth.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {FileEndpointApi} from "../../api-client/endpoint/file-endpoint-api";
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-car-details',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink
+  ],
   templateUrl: './car-details.component.html',
   styleUrls: ['./car-details.component.scss']
 })

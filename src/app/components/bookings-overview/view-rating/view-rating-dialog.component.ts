@@ -3,9 +3,18 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../bookings-overview.component";
 import {Booking, Rating} from "../../../generated-code";
 import {AppColors} from "../../../shared/colors";
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-alert-dialog',
+  selector: 'app-view-rating-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatDialogModule
+  ],
   templateUrl: './view-rating-dialog.component.html',
   styleUrls: ['./view-rating-dialog.component.scss']
 })
