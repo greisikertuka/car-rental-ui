@@ -33,9 +33,10 @@ export class AuthService {
     this.tokenSubject.next(token);
   }
 
-  login(token: string): void {
-    this.cookieService.set('token', token);
-    this.getUserDetails(token);
+  login(accessToken: string, refreshToken: string): void {
+    this.cookieService.set('accessToken', accessToken);
+    this.cookieService.set('refreshToken', refreshToken);
+    this.getUserDetails(accessToken);
   }
 
   logout(): void {
@@ -47,6 +48,24 @@ export class AuthService {
 
   private decodeToken(token: string): User {
     const decodedToken: any = jwtDecode(token);
+    console.log(decodedToken);
+    const user = <User>{
+      id: decodedToken.id,
+      email: decodedToken.email,
+      username: decodedToken.username,
+      name: decodedToken.name,
+      lastName: decodedToken.lastName,
+      phone: decodedToken.phone,
+      role: decodedToken.role,
+      googleLogin: decodedToken.googleLogin,
+      status: decodedToken.status,
+      darkMode: decodedToken.darkMode,
+      imageUrl: decodedToken.imageUrl,
+      imagePublicId: decodedToken.imagePublicId,
+      createdAt: decodedToken.createdAt,
+      lastUpdate: decodedToken.lastUpdate,
+    };
+    console.log(user);
     return {
       id: decodedToken.id,
       email: decodedToken.email,

@@ -147,9 +147,9 @@ export class ProfileComponent implements OnInit {
       password: this.user.password
     }).subscribe(
       (response) => {
-        this.token = response.token;
+        this.token = response.accessToken;
         if (this.token) {
-          this.authService.login(this.token);
+          this.authService.login(response.accessToken!, response.refreshToken!);
         }
       },
       error =>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {LoginRequest, User} from "../../generated-code";
+import {LoginRequest, LoginResponse, User} from "../../generated-code";
 import {AuthService} from "../../authentication/auth.service";
 import {map} from "rxjs/operators";
 
@@ -14,7 +14,7 @@ export class UserEndpointApi {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  login(loginRequest?: LoginRequest): Observable<any> {
+  login(loginRequest?: LoginRequest): Observable<LoginResponse> {
     const url = `${this.baseUrl}/login`;
     return this.http.post<any>(url, loginRequest).pipe(
       map(response => {

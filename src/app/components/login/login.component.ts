@@ -76,9 +76,9 @@ export class LoginComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       ).subscribe({
         next: (response) => {
-          this.token = response.token;
+          this.token = response.accessToken;
           if (this.token) {
-            this.authService.login(this.token);
+            this.authService.login(response.accessToken!, response.refreshToken!);
             this.snackBar.open(`Successfully logged in!`, 'Close', {
               duration: 1500,
               panelClass: ["success-snackbar"]
