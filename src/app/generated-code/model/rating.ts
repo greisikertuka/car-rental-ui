@@ -17,8 +17,10 @@ export interface Rating {
     id?: number;
     rating: number;
     comment?: string;
-    timeStamp: string;
+    createdAt: string;
+    carId?: number;
     car: Car;
+    userId?: number;
     user: User;
 }
 

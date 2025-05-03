@@ -65,8 +65,6 @@ export class ProfileComponent implements OnInit {
     this.profileEditForm = this.fb.group({
       name: [this.user.name, Validators.required],
       lastName: [this.user.lastName, Validators.required],
-      birthday: [this.user.birthday || null, Validators.required],
-      father: [this.user.father || '', Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
       phone: [this.user.phone, phoneNumberValidator()],
       username: [this.user.username, usernameValidator()],
@@ -114,13 +112,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  //todo - fix
   saveProfileChanges() {
     this.user = {
       id: this.user.id,
       name: this.profileEditForm.get("name")?.value,
       lastName: this.profileEditForm.get("lastName")?.value,
-      father: this.profileEditForm.get("father")?.value,
-      birthday: this.profileEditForm.get("birthday")?.value,
       email: this.profileEditForm.get("email")?.value,
       phone: this.profileEditForm.get("phone")?.value,
       username: this.profileEditForm.get("username")?.value,

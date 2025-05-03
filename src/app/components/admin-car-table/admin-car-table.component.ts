@@ -20,7 +20,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-car-table',
@@ -33,7 +32,6 @@ import { RouterLink } from '@angular/router';
     MatTableModule,
     MatSortModule,
     MatCardModule,
-    RouterLink
   ],
   templateUrl: './admin-car-table.component.html',
   styleUrls: ['./admin-car-table.component.scss']

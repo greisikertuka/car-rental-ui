@@ -13,7 +13,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatButtonModule} from "@angular/material/button";
-import {CommonModule} from "@angular/common";
+import {CommonModule, Location} from "@angular/common";
 
 @Component({
   selector: 'app-rent',
@@ -82,14 +82,17 @@ export class RentComponent implements OnInit {
     const formValue = this.rentForm.value['dateRange'];
     const daysDifference = Math.floor((formValue.end.getTime() - formValue.start.getTime()) / (1000 * 60 * 60 * 24));
     const total = this.car.price * daysDifference;
-    this.bookingService.createBooking(this.carId, this.userId, {
+
+    //todo - fix this
+    /*this.bookingService.createBooking(this.carId, this.userId, {
+      dropOffLocation: {id : 17,}, pickupLocation: undefined,
       name: this.rentForm.value['name'],
       lastName: this.rentForm.value['lastName'],
       email: this.rentForm.value['email'],
       phone: this.rentForm.value['phone'],
       startDate: formValue.start.getTime().toString(),
       endDate: formValue.end.getTime().toString(),
-      timeStamp: Date.now().toString(),
+      createdAt: Date.now().toString(),
       bookingStatus: BookingStatus.Pending,
       total: total,
       car: this.car,
@@ -109,6 +112,6 @@ export class RentComponent implements OnInit {
             panelClass: ["error-snackbar"]
           });
         }
-      );
+      );*/
   }
 }

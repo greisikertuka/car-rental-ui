@@ -1,35 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {
-  Brand,
-  BrandDisplayNames,
-  Car,
-  Color,
-  ColorDisplayNames,
-  FuelType,
-  FuelTypeDisplayNames,
-  Role,
-  Transmission,
-  TransmissionDisplayNames,
-  User
-} from "../../generated-code";
+import {ActivatedRoute, Params, Router, RouterLink} from "@angular/router";
+import {Brand, Car, Color, FuelType, Insurance, Mileage, Role, Transmission, User} from "../../generated-code";
 import {RoutesPath} from "../../shared/routes";
 import {AppColors} from "../../shared/colors";
 import {CarEndpointApi} from "../../api-client/endpoint/car-endpoint-api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {convertToCamelCase, getEnumArray} from "../../shared/helpers";
 import {AuthService} from "../../authentication/auth.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FileEndpointApi} from "../../api-client/endpoint/file-endpoint-api";
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-car-details',
@@ -54,10 +40,10 @@ export class CarDetailsComponent implements OnInit {
   car!: Car;
   editMode: boolean = false;
   carEditForm!: FormGroup;
-  brands = getEnumArray(Brand, BrandDisplayNames);
-  colors = getEnumArray(Color, ColorDisplayNames);
-  fuelTypes = getEnumArray(FuelType, FuelTypeDisplayNames);
-  transmissionTypes = getEnumArray(Transmission, TransmissionDisplayNames);
+  brands = getEnumArray(Brand);
+  colors = getEnumArray(Color);
+  fuelTypes = getEnumArray(FuelType);
+  transmissionTypes = getEnumArray(Transmission);
   thumbnaimForm!: FormGroup;
   selectedFile: File | null = null;
   thumbnailSrc: string | undefined;
@@ -158,6 +144,14 @@ export class CarDetailsComponent implements OnInit {
 
   saveCarChanges() {
     this.car = {
+      babySeats: 1,
+      businessId: 1,
+      createdAt: new Date().toString(),
+      insurance: Insurance.Albsig,
+      luggage: 0,
+      maximumDays: 0,
+      mileage: Mileage._100,
+      minimumDays: 0,
       id: this.car.id,
       model: this.carEditForm.value['model'],
       brand: this.carEditForm.value['brand'],
@@ -171,7 +165,7 @@ export class CarDetailsComponent implements OnInit {
       licencePlate: this.carEditForm.value['licencePlate'],
       price: this.carEditForm.value['price'],
       averageRating: this.car.averageRating,
-      reviewsCount: this.car.reviewsCount,
+      reviewsCount: this.car.reviewsCount
     };
     this.carEndpointApi.updateCar(this.car).subscribe(
       () => this.snackBar.open('Successfully updated car!', 'Close', {

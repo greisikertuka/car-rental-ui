@@ -55,7 +55,6 @@ export class UserDetailsComponent implements OnInit {
     this.profileEditForm = this.fb.group({
       name: [this.user?.name || '', Validators.required],
       father: [this.user?.lastName || '', Validators.required],
-      birthday: [this.user?.birthday || null, Validators.required],
       lastName: [this.user?.lastName || '', Validators.required],
       email: [this.user?.email || '', [Validators.required, Validators.email]],
       phone: [this.user?.phone || '', phoneNumberValidator()],
@@ -70,8 +69,6 @@ export class UserDetailsComponent implements OnInit {
       id: this.user.id,
       name: this.profileEditForm.get("name")?.value,
       lastName: this.profileEditForm.get("lastName")?.value,
-      father: this.profileEditForm.get("father")?.value,
-      birthday: this.profileEditForm.get("birthday")?.value,
       email: this.profileEditForm.get("email")?.value,
       phone: this.profileEditForm.get("phone")?.value,
       username: this.profileEditForm.get("username")?.value,

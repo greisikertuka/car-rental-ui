@@ -1,15 +1,13 @@
 import {Component, EventEmitter, Inject, Output} from '@angular/core';
 import {Booking, Rating} from "../../../generated-code";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../bookings-overview.component";
 import {AppColors} from "../../../shared/colors";
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-add-rating',
@@ -51,9 +49,11 @@ export class AddRatingComponent {
       let rating: Rating = {
         rating: this.ratingForm.value['rating'],
         comment: this.ratingForm.value['comment'],
-        timeStamp: Date.now().toString(),
+        createdAt: Date.now().toString(),
         car: this.booking.car,
-        user: this.booking.user
+        carId: this.booking.carId,
+        user: {id: this.booking.userId},
+        userId: this.booking.userId
       }
       this.dialogRef.close(rating);
     }

@@ -9,7 +9,7 @@ import {map} from "rxjs/operators";
   providedIn: 'root'
 })
 export class UserEndpointApi {
-  private baseUrl = 'http://localhost:8081/user';
+  private baseUrl = 'http://localhost:8081/users';
 
   constructor(private http: HttpClient, private authService: AuthService) {
   }

@@ -10,9 +10,12 @@
  * Do not edit the class manually.
  */
 import { Brand } from './brand';
+import { Insurance } from './insurance';
 import { Color } from './color';
+import { Mileage } from './mileage';
 import { Transmission } from './transmission';
-import { FuelType } from './fuel-type';
+import { CarLocation } from './carLocation';
+import { FuelType } from './fuelType';
 
 
 export interface Car { 
@@ -24,14 +27,26 @@ export interface Car {
     doors: number;
     color: Color;
     transmission: Transmission;
+    mileage: Mileage;
+    insurance: Insurance;
     seats: number;
+    minimumDays: number;
+    maximumDays: number;
+    babySeats: number;
     year: number;
     licencePlate: string;
     price: number;
     averageRating?: number;
     reviewsCount?: number;
+    createdAt: string;
+    lastUpdate?: string;
+    luggage: number;
+    options?: string;
+    imageUrl?: string;
+    imagePublicId?: string;
+    businessId: number;
+    carLocations?: Array<CarLocation>;
 }
-export namespace Car {
-}
+
 
 

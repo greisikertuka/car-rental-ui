@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {getEnumArray, passwordValidator, phoneNumberValidator, usernameValidator} from "../../../shared/helpers";
-import {Role, RoleDisplayNames, User} from "../../../generated-code";
+import {Role, User} from "../../../generated-code";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../bookings-overview/bookings-overview.component";
 import {AppColors} from "../../../shared/colors";
@@ -35,7 +35,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 export class AddUserComponent implements OnInit {
   title: String;
   addUserForm: FormGroup;
-  roles = getEnumArray(Role, RoleDisplayNames);
+  roles = getEnumArray(Role);
 
   constructor(
     public dialogRef: MatDialogRef<AddUserComponent>,
@@ -65,8 +65,6 @@ export class AddUserComponent implements OnInit {
       let user: User = {
         name: this.addUserForm.value['name'],
         lastName: this.addUserForm.value['lastName'],
-        father: this.addUserForm.value['father'],
-        birthday: this.addUserForm.value['birthday'],
         email: this.addUserForm.value['email'],
         phone: this.addUserForm.value['phone'],
         username: this.addUserForm.value['username'],

@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.5.0",
+    "generatorName": "typescript-angular",
+    "output": "src/app/api",
+    "inputSpec": "./src/app/api-client/openapi.yaml",
+    "additionalProperties": {
+      "ngVersion": "19.0.0",
+      "apiModulePrefix": "Api",
+      "configurationPrefix": "ApiConfiguration",
+      "fileNaming": "kebab-case",
+      "stringEnums": true,
+      "sortParamsByRequiredFlag": true,
+      "sortModelPropertiesByRequiredFlag": true,
+      "ensureUniqueParams": true,
+      "supportsES6": true,
+      "withInterfaces": true
+    }
+  }
+} 

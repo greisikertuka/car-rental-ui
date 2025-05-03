@@ -41,10 +41,10 @@ export function phoneNumberValidator(): ValidatorFn {
   };
 }
 
-
-export function getEnumArray(enumType: any, enumDisplayNames: any): { value: string, viewValue: string }[] {
+//todo - fix
+export function getEnumArray(enumType: any): { value: string, viewValue: string }[] {
   return Object.keys(enumType).map(key => ({
     value: enumType[key as keyof typeof enumType],
-    viewValue: enumDisplayNames[enumType[key as keyof typeof enumType]]
+    viewValue: 'Test'
   }));
 }

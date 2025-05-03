@@ -1,6 +1,6 @@
 import {BehaviorSubject} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {User} from '../generated-code';
+import {Role, Status, User} from '../generated-code';
 import {HttpHeaders} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
 import {jwtDecode} from "jwt-decode";
@@ -9,7 +9,8 @@ import {jwtDecode} from "jwt-decode";
   providedIn: 'root'
 })
 export class AuthService {
-  private tokenFromCookies!: string;
+  private accessToken!: string;
+  private refreshToken!: string;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private userSubject = new BehaviorSubject<User | null>(null);
   private tokenSubject = new BehaviorSubject<string | null>(null);
@@ -18,9 +19,10 @@ export class AuthService {
   user$ = this.userSubject.asObservable();
 
   constructor(private cookieService: CookieService) {
-    this.tokenFromCookies = this.cookieService.get('token');
-    if (this.tokenFromCookies) {
-      this.getUserDetails(this.tokenFromCookies);
+    this.accessToken = this.cookieService.get('accessToken');
+    this.refreshToken = this.cookieService.get('refreshToken');
+    if (this.accessToken) {
+      this.getUserDetails(this.accessToken);
     }
   }
 
@@ -52,7 +54,15 @@ export class AuthService {
       name: decodedToken.name,
       lastName: decodedToken.lastName,
       phone: decodedToken.phone,
-      role: decodedToken.role
+      role: decodedToken.role,
+      googleLogin: decodedToken.googleLogin,
+      status: decodedToken.status,
+      darkMode: decodedToken.darkMode,
+      imageUrl: decodedToken.imageUrl,
+      imagePublicId: decodedToken.imagePublicId,
+      createdAt: decodedToken.createdAt,
+      lastUpdate: decodedToken.lastUpdate,
+
     };
   }
 

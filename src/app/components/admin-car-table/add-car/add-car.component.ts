@@ -1,25 +1,13 @@
-import {Component, EventEmitter, Inject, Output, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
-import {
-  Brand,
-  BrandDisplayNames,
-  Car,
-  Color,
-  ColorDisplayNames,
-  FuelType,
-  FuelTypeDisplayNames,
-  Transmission,
-  TransmissionDisplayNames
-} from "../../../generated-code";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Brand, Car, Color, FuelType, Insurance, Mileage, Transmission,} from "../../../generated-code";
 import {DialogData} from "../../bookings-overview/bookings-overview.component";
 import {AppColors} from "../../../shared/colors";
 import {getEnumArray} from "../../../shared/helpers";
@@ -43,10 +31,10 @@ import {getEnumArray} from "../../../shared/helpers";
 export class AddCarComponent implements OnInit {
   title: String;
   addCarForm: FormGroup;
-  brands = getEnumArray(Brand, BrandDisplayNames);
-  colors = getEnumArray(Color, ColorDisplayNames);
-  fuelTypes = getEnumArray(FuelType, FuelTypeDisplayNames)
-  transmissionTypes = getEnumArray(Transmission, TransmissionDisplayNames)
+  brands = getEnumArray(Brand);
+  colors = getEnumArray(Color);
+  fuelTypes = getEnumArray(FuelType)
+  transmissionTypes = getEnumArray(Transmission)
 
   constructor(
     public dialogRef: MatDialogRef<AddCarComponent>,
@@ -73,6 +61,7 @@ export class AddCarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //todo - fix
   save(): void {
     if (this.addCarForm.valid) {
       let car: Car = {
@@ -88,7 +77,19 @@ export class AddCarComponent implements OnInit {
         licencePlate: this.addCarForm.value['licencePlate'],
         price: this.addCarForm.value['price'],
         averageRating: 0.0,
-        reviewsCount: 0
+        reviewsCount: 0,
+        mileage: Mileage._0,
+        insurance: Insurance.Atlantik,
+        minimumDays: 1,
+        maximumDays: 5,
+        babySeats: 2,
+        createdAt: new Date().toString(),
+        luggage: 2,
+        options: undefined,
+        imageUrl: undefined,
+        imagePublicId: undefined,
+        businessId: 17,
+        carLocations: undefined,
       }
       this.dialogRef.close(car);
     }

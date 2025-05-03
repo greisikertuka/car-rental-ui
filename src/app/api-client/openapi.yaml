@@ -7,7 +7,8 @@ paths:
   /bookings/all:
     get:
       tags:
-        - Booking Endpoint
+      - Booking Endpoint
+      operationId: getAllBookings
       responses:
         "200":
           description: List of bookings found
@@ -16,147 +17,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Booking'
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - ADMIN
-  /bookings/car/{carId}:
-    get:
-      tags:
-        - Booking Endpoint
-      parameters:
-        - name: carId
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        "200":
-          description: List of bookings found for a car
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Booking'
-        "404":
-          description: Car not found
-          content:
-            text/plain: {}
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - ADMIN
-  /bookings/create:
-    post:
-      tags:
-        - Booking Endpoint
-      parameters:
-        - name: carId
-          in: query
-          schema:
-            format: int64
-            type: integer
-        - name: userId
-          in: query
-          schema:
-            format: int64
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Booking'
-      responses:
-        "200":
-          description: OK
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
-  /bookings/get/{id}:
-    get:
-      tags:
-        - Booking Endpoint
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        "200":
-          description: Booking found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Booking'
-        "404":
-          description: Booking not found
-          content:
-            text/plain: {}
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
-  /bookings/update:
-    put:
-      tags:
-        - Booking Endpoint
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Booking'
-      responses:
-        "200":
-          description: OK
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
-  /bookings/user/{userId}:
-    get:
-      tags:
-        - Booking Endpoint
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        "200":
-          description: List of bookings found for an user
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Booking'
-        "404":
+                  $ref: '#/components/schemas/BookingData'
+        "500":
           description: User not found
           content:
             text/plain: {}
@@ -165,20 +27,124 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
-  /bookings/{id}:
-    delete:
+      - SecurityScheme:
+        - ADMIN
+  /bookings/business/{businessId}:
+    get:
       tags:
-        - Booking Endpoint
+      - Booking Endpoint
+      operationId: getBookingsByBusinessId
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of bookings found for a business
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingData'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Business not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /bookings/car/{carId}:
+    get:
+      tags:
+      - Booking Endpoint
+      operationId: getBookingsByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of bookings found for a car
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingData'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /bookings/car/{carId}/unavailable-dates:
+    get:
+      tags:
+      - Booking Endpoint
+      operationId: getUnavailableDatesByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of unavailable dates for a car
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DateRange'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /bookings/create:
+    post:
+      tags:
+      - Booking Endpoint
+      operationId: insertBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
       responses:
         "200":
           description: OK
@@ -187,13 +153,265 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
-  /cars/all:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /bookings/delete/{id}:
+    delete:
+      tags:
+      - Booking Endpoint
+      operationId: deleteBooking
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /bookings/get/{id}:
     get:
       tags:
-        - Car Endpoint
+      - Booking Endpoint
+      operationId: getBookingById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Booking found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingData'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Booking not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /bookings/update:
+    put:
+      tags:
+      - Booking Endpoint
+      operationId: updateBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingData'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /bookings/user/{userId}:
+    get:
+      tags:
+      - Booking Endpoint
+      operationId: getBookingsByUserId
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of bookings found for an user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingData'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /businesses/all:
+    get:
+      tags:
+      - Business Endpoint
+      operationId: getAllBusinesses
+      responses:
+        "200":
+          description: List of businesses found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Business'
+  /businesses/create:
+    post:
+      tags:
+      - Business Endpoint
+      operationId: insertBusiness
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+      responses:
+        "201":
+          description: Created business
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /businesses/delete/{id}:
+    delete:
+      tags:
+      - Business Endpoint
+      operationId: deleteBusiness
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          description: Deleted picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "404":
+          description: Image not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting picture!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /businesses/get/{id}:
+    get:
+      tags:
+      - Business Endpoint
+      operationId: getBusinessById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Business found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        "404":
+          description: Business not found
+          content:
+            text/plain: {}
+  /businesses/update:
+    put:
+      tags:
+      - Business Endpoint
+      operationId: updateBusiness
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /carLocations:
+    get:
+      tags:
+      - Car Location Endpoint
+      operationId: getAllCarLocations
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /carLocations/car/location/{locationId}:
+    get:
+      tags:
+      - Car Location Endpoint
+      operationId: getCarsByLocationId
+      parameters:
+      - name: locationId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
       responses:
         "200":
           description: List of cars found
@@ -203,57 +421,582 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Car'
+        "404":
+          description: Location not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /carLocations/car/{carId}:
+    get:
+      tags:
+      - Car Location Endpoint
+      operationId: getCarLocationsByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of car locations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarLocation'
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /carLocations/create:
+    post:
+      tags:
+      - Car Location Endpoint
+      operationId: insertCarLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarLocation'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /carLocations/delete/{id}:
+    delete:
+      tags:
+      - Car Location Endpoint
+      operationId: deleteCarLocation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /carLocations/location/car/{carId}:
+    get:
+      tags:
+      - Car Location Endpoint
+      operationId: getLocationsByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of locations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+  /carLocations/location/{locationId}:
+    get:
+      tags:
+      - Car Location Endpoint
+      operationId: getCarLocationsByLocationId
+      parameters:
+      - name: locationId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of car locations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarLocation'
+        "401":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /carLocations/update:
+    put:
+      tags:
+      - Car Location Endpoint
+      operationId: updateCarLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarLocation'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /carLocations/{id}:
+    get:
+      tags:
+      - Car Location Endpoint
+      operationId: getCarLocationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Car location found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarLocation'
+        "404":
+          description: Car location not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /cars/all:
+    get:
+      tags:
+      - Car Endpoint
+      operationId: getAllCars
+      responses:
+        "200":
+          description: List of cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+  /cars/business/{business_id}:
+    get:
+      tags:
+      - Car Endpoint
+      operationId: getCarsByBusinessId
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Cars not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
   /cars/create:
     post:
       tags:
-        - Car Endpoint
+      - Car Endpoint
+      operationId: insertCar
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Car'
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
         "401":
           description: Not Authorized
-        "403":
-          description: Not Allowed
       security:
-        - SecurityScheme:
-            - ADMIN
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
   /cars/delete/{id}:
     delete:
       tags:
-        - Car Endpoint
+      - Car Endpoint
+      operationId: deleteCar
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          description: Deleted picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "401":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "403":
+          description: Image not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting picture!
+          content:
+            text/plain: {}
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /cars/filter:
+    get:
+      tags:
+      - Car Endpoint
+      operationId: filterCars
+      parameters:
+      - name: ascending
+        in: query
+        schema:
+          type: boolean
+      - name: brand
+        in: query
+        schema:
+          $ref: '#/components/schemas/Brand'
+      - name: businessId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: city
+        in: query
+        schema:
+          $ref: '#/components/schemas/City'
+      - name: color
+        in: query
+        schema:
+          $ref: '#/components/schemas/Color'
+      - name: endDate
+        in: query
+        schema:
+          type: string
+      - name: fuelType
+        in: query
+        schema:
+          $ref: '#/components/schemas/FuelType'
+      - name: insurance
+        in: query
+        schema:
+          $ref: '#/components/schemas/Insurance'
+      - name: maxDoors
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: maxLuggage
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: maxPrice
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: maxRating
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: maxSeats
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: mileage
+        in: query
+        schema:
+          $ref: '#/components/schemas/Mileage'
+      - name: minDoors
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: minLuggage
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: minPrice
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: minRating
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: minSeats
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: page
+        in: query
+        schema:
+          format: int32
+          default: 1
+          type: integer
+      - name: pageSize
+        in: query
+        schema:
+          format: int32
+          default: 15
+          type: integer
+      - name: search
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        schema:
+          type: string
+      - name: transmissionType
+        in: query
+        schema:
+          $ref: '#/components/schemas/Transmission'
+      - name: year
+        in: query
+        schema:
+          format: int32
+          type: integer
       responses:
         "200":
-          description: OK
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - ADMIN
+          description: List of cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+  /cars/filter/count:
+    get:
+      tags:
+      - Car Endpoint
+      operationId: countFilteredCars
+      parameters:
+      - name: brand
+        in: query
+        schema:
+          $ref: '#/components/schemas/Brand'
+      - name: businessId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: city
+        in: query
+        schema:
+          $ref: '#/components/schemas/City'
+      - name: color
+        in: query
+        schema:
+          $ref: '#/components/schemas/Color'
+      - name: endDate
+        in: query
+        schema:
+          type: string
+      - name: fuelType
+        in: query
+        schema:
+          $ref: '#/components/schemas/FuelType'
+      - name: insurance
+        in: query
+        schema:
+          $ref: '#/components/schemas/Insurance'
+      - name: maxDoors
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: maxLuggage
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: maxPrice
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: maxRating
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: maxSeats
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: mileage
+        in: query
+        schema:
+          $ref: '#/components/schemas/Mileage'
+      - name: minDoors
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: minLuggage
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: minPrice
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: minRating
+        in: query
+        schema:
+          format: double
+          type: number
+      - name: minSeats
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: search
+        in: query
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        schema:
+          type: string
+      - name: transmissionType
+        in: query
+        schema:
+          $ref: '#/components/schemas/Transmission'
+      - name: year
+        in: query
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: Total count of filtered cars
+          content:
+            application/json:
+              schema:
+                type: integer
   /cars/get/{id}:
     get:
       tags:
-        - Car Endpoint
+      - Car Endpoint
+      operationId: getCarById
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
       responses:
         "200":
           description: Car found
@@ -268,7 +1011,8 @@ paths:
   /cars/update:
     put:
       tags:
-        - Car Endpoint
+      - Car Endpoint
+      operationId: updateCar
       requestBody:
         content:
           application/json:
@@ -282,12 +1026,1179 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - ADMIN
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /favouriteBusinesses:
+    get:
+      tags:
+      - Favourite Business Endpoint
+      operationId: getAllFavouriteBusinesses
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteBusinesses/business/{businessId}:
+    get:
+      tags:
+      - Favourite Business Endpoint
+      operationId: getFavouriteBusinessesByBusinessId
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of favourite business found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavouriteBusiness'
+        "404":
+          description: Business not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteBusinesses/create:
+    post:
+      tags:
+      - Favourite Business Endpoint
+      operationId: insertFavouriteBusiness
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavouriteBusiness'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteBusinesses/delete/{id}:
+    delete:
+      tags:
+      - Favourite Business Endpoint
+      operationId: deleteFavouriteBusiness
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteBusinesses/update:
+    put:
+      tags:
+      - Favourite Business Endpoint
+      operationId: updateFavouriteBusiness
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavouriteBusiness'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteBusinesses/user/{userId}:
+    get:
+      tags:
+      - Favourite Business Endpoint
+      operationId: getFavouriteBusinessesByUserId
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of favourite businesses found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavouriteBusiness'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteBusinesses/{id}:
+    get:
+      tags:
+      - Favourite Business Endpoint
+      operationId: getFavouriteBusinessById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Favourite business found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavouriteBusiness'
+        "404":
+          description: Favourite business not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteCars:
+    get:
+      tags:
+      - Favourite Car Endpoint
+      operationId: getAllFavouriteCars
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteCars/car/{carId}:
+    get:
+      tags:
+      - Favourite Car Endpoint
+      operationId: getFavouriteCarsByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of favourite cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavouriteCar'
+        "404":
+          description: Car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteCars/create:
+    post:
+      tags:
+      - Favourite Car Endpoint
+      operationId: insertFavouriteCar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavouriteCar'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteCars/delete/{id}:
+    delete:
+      tags:
+      - Favourite Car Endpoint
+      operationId: deleteFavouriteCar
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteCars/isFavourite:
+    get:
+      tags:
+      - Favourite Car Endpoint
+      operationId: isCarFavouriteForUser
+      parameters:
+      - name: carId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: userId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Car is favourite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavouriteCar'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Car not found
+          content:
+            application/json: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteCars/update:
+    put:
+      tags:
+      - Favourite Car Endpoint
+      operationId: updateFavouriteCar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavouriteCar'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /favouriteCars/user/{userId}:
+    get:
+      tags:
+      - Favourite Car Endpoint
+      operationId: getFavouriteCarsByUserId
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of favourite cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavouriteCar'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /favouriteCars/{id}:
+    get:
+      tags:
+      - Favourite Car Endpoint
+      operationId: getFavouriteCarById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Favourite car found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavouriteCar'
+        "404":
+          description: Favourite car not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /images/businesses/{businessId}/profile-picture:
+    post:
+      tags:
+      - Image Endpoint
+      operationId: uploadBusinessImage
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - fileName
+              - file
+              type: object
+              properties:
+                fileName:
+                  type: string
+                file:
+                  format: binary
+                  type: string
+            encoding:
+              fileName:
+                contentType: text/plain
+              file:
+                contentType: application/octet-stream
+      responses:
+        "200":
+          description: Edited profile picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "500":
+          description: Error when generating updated token!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /images/cars/{carId}/images:
+    get:
+      tags:
+      - Image Endpoint
+      operationId: getCarImagesByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Car images retrieved successfully!
+          content: {}
+        "404":
+          description: Car images not found
+          content:
+            text/plain: {}
+  /images/cars/{carId}/photos:
+    post:
+      tags:
+      - Image Endpoint
+      operationId: uploadCarImages
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+    delete:
+      tags:
+      - Image Endpoint
+      operationId: deleteCarImagesByCarId
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          description: Deleted pictures successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "403":
+          description: Not authorized!
+          content:
+            text/plain: {}
+        "404":
+          description: Images not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting pictures!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /images/cars/{carId}/thumbnail:
+    post:
+      tags:
+      - Image Endpoint
+      operationId: uploadCarThumbnail
+      parameters:
+      - name: carId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - fileName
+              - file
+              type: object
+              properties:
+                fileName:
+                  type: string
+                file:
+                  format: binary
+                  type: string
+            encoding:
+              fileName:
+                contentType: text/plain
+              file:
+                contentType: application/octet-stream
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /images/deleteProfilePicture:
+    post:
+      tags:
+      - Image Endpoint
+      operationId: deleteProfilePicture
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteRequest'
+      responses:
+        "200":
+          description: Deleted profile picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Image not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting picture!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /images/users/{userId}/profile-picture:
+    post:
+      tags:
+      - Image Endpoint
+      operationId: uploadProfileImage
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - fileName
+              - file
+              type: object
+              properties:
+                fileName:
+                  type: string
+                file:
+                  format: binary
+                  type: string
+            encoding:
+              fileName:
+                contentType: text/plain
+              file:
+                contentType: application/octet-stream
+      responses:
+        "200":
+          description: Edited profile picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "500":
+          description: Error when generating updated token!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /images/{imageId}:
+    delete:
+      tags:
+      - Image Endpoint
+      operationId: deleteImageById
+      parameters:
+      - name: imageId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Deleted picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Image not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting picture!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /locations/all:
+    get:
+      tags:
+      - Location Endpoint
+      operationId: getAllLocations
+      responses:
+        "200":
+          description: List of locations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Business'
+  /locations/business/{businessId}:
+    get:
+      tags:
+      - Location Endpoint
+      operationId: getLocationsByBusinessId
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of locations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        "404":
+          description: Location not found
+          content:
+            text/plain: {}
+    delete:
+      tags:
+      - Location Endpoint
+      operationId: deleteLocationsByBusinessId
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Locations deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        "404":
+          description: Locations not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /locations/create/{businessId}:
+    post:
+      tags:
+      - Location Endpoint
+      operationId: createLocation
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        "200":
+          description: Location created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: Business not found
+          content:
+            text/plain: {}
+        "409":
+          description: location already exists for business
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /locations/delete/{id}:
+    delete:
+      tags:
+      - Location Endpoint
+      operationId: deleteLocation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /locations/update:
+    put:
+      tags:
+      - Location Endpoint
+      operationId: updateLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /locations/{id}:
+    get:
+      tags:
+      - Location Endpoint
+      operationId: getLocationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Location found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        "404":
+          description: Location not found
+          content:
+            text/plain: {}
+  /notifications/all:
+    get:
+      tags:
+      - Notification Endpoint
+      operationId: getAllNotifications
+      responses:
+        "200":
+          description: Notifications found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserNotification'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /notifications/delete/{id}:
+    delete:
+      tags:
+      - Notification Endpoint
+      operationId: deleteById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          description: Deleted notification successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "404":
+          description: Notification not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting notification!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/deleteMultiple:
+    post:
+      tags:
+      - Notification Endpoint
+      operationId: deleteMultiple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdListRequest'
+      responses:
+        "204":
+          description: Deleted userNotifications
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "500":
+          description: Error
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/markAllAsRead:
+    put:
+      tags:
+      - Notification Endpoint
+      operationId: markAllAsRead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdRequest'
+      responses:
+        "200":
+          description: UserNotifications mark as read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/markAsRead:
+    post:
+      tags:
+      - Notification Endpoint
+      operationId: markAsRead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadRequest'
+      responses:
+        "200":
+          description: UserNotification read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "404":
+          description: UserNotification not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/markMultipleAsRead:
+    put:
+      tags:
+      - Notification Endpoint
+      operationId: markMultipleAsRead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdListRequest'
+      responses:
+        "200":
+          description: UserNotifications marked as read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/type:
+    get:
+      tags:
+      - Notification Endpoint
+      operationId: filterNotificationsByType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTypeRequest'
+      responses:
+        "200":
+          description: List of notifications found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserNotification'
+        "404":
+          description: UserNotification not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/user/{userId}:
+    get:
+      tags:
+      - Notification Endpoint
+      operationId: getNotificationsByUserId
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: List of notifications found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserNotification'
+        "404":
+          description: UserNotification not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/{id}:
+    get:
+      tags:
+      - Notification Endpoint
+      operationId: getNotificationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: UserNotification found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "404":
+          description: UserNotification not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /notifications/{userId}/deleteAll:
+    delete:
+      tags:
+      - Notification Endpoint
+      operationId: deleteAllByUserId
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          description: Notifications deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
   /ratings/all:
     get:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: getAllRatings
       responses:
         "200":
           description: List of ratings found
@@ -296,25 +2207,26 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Rating'
+                  $ref: '#/components/schemas/RatingData'
         "401":
           description: Not Authorized
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - ADMIN
+      - SecurityScheme:
+        - ADMIN
   /ratings/car/{carId}:
     get:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: getRatingsByCarId
       parameters:
-        - name: carId
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: carId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
       responses:
         "200":
           description: List of ratings found for a car
@@ -328,38 +2240,32 @@ paths:
           description: Car not found
           content:
             text/plain: {}
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-      security:
-        - SecurityScheme:
-            - ADMIN
   /ratings/create:
     post:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: insertRating
       parameters:
-        - name: bookingId
-          in: query
-          schema:
-            format: int64
-            type: integer
-        - name: carId
-          in: query
-          schema:
-            format: int64
-            type: integer
-        - name: userId
-          in: query
-          schema:
-            format: int64
-            type: integer
+      - name: bookingId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: carId
+        in: query
+        schema:
+          format: int64
+          type: integer
+      - name: userId
+        in: query
+        schema:
+          format: int64
+          type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Rating'
+              $ref: '#/components/schemas/RatingData'
       responses:
         "200":
           description: OK
@@ -368,20 +2274,21 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
+      - SecurityScheme:
+        - USER
+        - ADMIN
   /ratings/get/{id}:
     get:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: getRatingById
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
       responses:
         "200":
           description: Rating found
@@ -398,13 +2305,15 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
   /ratings/update:
     put:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: updateRating
       requestBody:
         content:
           application/json:
@@ -418,20 +2327,21 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
+      - SecurityScheme:
+        - USER
+        - ADMIN
   /ratings/user/{userId}:
     get:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: getRatingsByUserId
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: userId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
       responses:
         "200":
           description: List of ratings found for an user
@@ -440,30 +2350,33 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Rating'
+                  $ref: '#/components/schemas/RatingData'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
         "404":
           description: User not found
           content:
             text/plain: {}
         "401":
           description: Not Authorized
-        "403":
-          description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
+      - SecurityScheme:
+        - USER
+        - ADMIN
   /ratings/{id}:
     delete:
       tags:
-        - Rating Endpoint
+      - Rating Endpoint
+      operationId: deleteRating
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            format: int64
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
       responses:
         "200":
           description: OK
@@ -472,13 +2385,293 @@ paths:
         "403":
           description: Not Allowed
       security:
-        - SecurityScheme:
-            - USER
-            - ADMIN
-  /user/login:
+      - SecurityScheme:
+        - USER
+        - ADMIN
+  /subscriptions/business/{businessId}:
+    get:
+      tags:
+      - Subscription Endpoint
+      operationId: getSubscriptionForBusinessId
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Subscription found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        "403":
+          description: Not authorized
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - BUSINESS
+        - ADMIN
+  /terms-and-conditions/accept:
     post:
       tags:
-        - User Endpoint
+      - Terms And Conditions Endpoint
+      operationId: acceptTermsAndConditions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAgreement'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /terms-and-conditions/latest:
+    get:
+      tags:
+      - Terms And Conditions Endpoint
+      operationId: getLatestTermsAndConditions
+      responses:
+        "200":
+          description: Terms found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditions'
+        "404":
+          description: Terms not found
+          content:
+            text/plain: {}
+  /terms-and-conditions/user/didAccept:
+    get:
+      tags:
+      - Terms And Conditions Endpoint
+      operationId: didUserAcceptLatestTerms
+      responses:
+        "200":
+          description: User Agreement found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAgreement'
+        "404":
+          description: User Agreement not found
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /users/all:
+    get:
+      tags:
+      - User Endpoint
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: List of users found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserData'
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /users/changePassword:
+    put:
+      tags:
+      - User Endpoint
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+      responses:
+        "201":
+          description: Changed password successfully
+          content:
+            application/json: {}
+        "403":
+          description: Please check your password!
+          content:
+            text/plain: {}
+        "404":
+          description: User not found!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
+  /users/check-token:
+    get:
+      tags:
+      - User Endpoint
+      operationId: checkToken
+      parameters:
+      - name: token
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /users/confirmEmail:
+    put:
+      tags:
+      - User Endpoint
+      operationId: confirmEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailConfirmationRequest'
+      responses:
+        "200":
+          description: Account is set up!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "401":
+          description: Please confirm email!
+          content:
+            text/plain: {}
+        "404":
+          description: User not found!
+          content:
+            text/plain: {}
+  /users/create:
+    post:
+      tags:
+      - User Endpoint
+      operationId: insertUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /users/delete/{id}:
+    delete:
+      tags:
+      - User Endpoint
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "204":
+          description: Deleted picture successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "404":
+          description: Image not found!
+          content:
+            text/plain: {}
+        "500":
+          description: Error when deleting picture!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /users/get/{id}:
+    get:
+      tags:
+      - User Endpoint
+      operationId: findUserById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        "404":
+          description: User not found
+          content:
+            text/plain: {}
+  /users/googleLogin:
+    post:
+      tags:
+      - User Endpoint
+      operationId: googleLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+      responses:
+        "200":
+          description: Login successful!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "401":
+          description: Unauthorized
+          content:
+            text/plain: {}
+  /users/login:
+    post:
+      tags:
+      - User Endpoint
+      operationId: login
       requestBody:
         content:
           application/json:
@@ -491,7 +2684,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
-        "401":
+        "403":
           description: Unauthorized
           content:
             text/plain: {}
@@ -499,10 +2692,32 @@ paths:
           description: User not found
           content:
             text/plain: {}
-  /user/signUp:
+  /users/refreshToken:
     post:
       tags:
-        - User Endpoint
+      - User Endpoint
+      operationId: refreshToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        "200":
+          description: Token refresh successful!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "401":
+          description: Not authorized
+          content:
+            text/plain: {}
+  /users/signUp:
+    post:
+      tags:
+      - User Endpoint
+      operationId: signUp
       requestBody:
         content:
           application/json:
@@ -513,76 +2728,283 @@ paths:
           description: Sign up successful
           content:
             application/json: {}
+        "401":
+          description: Please confirm email!
+          content:
+            text/plain: {}
         "409":
           description: This username already exists!
           content:
             text/plain: {}
+  /users/update:
+    put:
+      tags:
+      - User Endpoint
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+      responses:
+        "204":
+          description: Edited profile successfully!
+          content:
+            application/json: {}
+        "409":
+          description: User with selected username exists!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMIN
+  /users/updateOwnProfile:
+    put:
+      tags:
+      - User Endpoint
+      operationId: updateProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+      responses:
+        "200":
+          description: Edited profile successfully!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "409":
+          description: Selected username exists!
+          content:
+            text/plain: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - USER
+        - BUSINESS
+        - ADMIN
 components:
   schemas:
     Booking:
       required:
-        - startDate
-        - endDate
-        - timeStamp
-        - bookingStatus
-        - total
-        - car
-        - user
+      - name
+      - lastName
+      - email
+      - phone
+      - startDate
+      - endDate
+      - createdAt
+      - bookingStatus
+      - total
+      - car
+      - pickupLocation
+      - dropOffLocation
       type: object
       properties:
         id:
           format: int64
           type: integer
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
         startDate:
-          $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/ZonedDateTime'
         endDate:
-          $ref: '#/components/schemas/Date'
-        timeStamp:
-          $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/ZonedDateTime'
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        lastUpdate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        bookingStatus:
+          $ref: '#/components/schemas/BookingStatus'
+        total:
+          format: float
+          minimum: 0
+          type: number
+        ratingId:
+          format: int64
+          type: integer
+        rating:
+          $ref: '#/components/schemas/Rating'
+        carId:
+          format: int64
+          type: integer
+        car:
+          $ref: '#/components/schemas/Car'
+        userId:
+          format: int64
+          type: integer
+        pickupLocationId:
+          format: int64
+          type: integer
+        pickupLocation:
+          $ref: '#/components/schemas/Location'
+        dropOffLocationId:
+          format: int64
+          type: integer
+        dropOffLocation:
+          $ref: '#/components/schemas/Location'
+    BookingData:
+      required:
+      - id
+      - name
+      - lastName
+      - email
+      - phone
+      - startDate
+      - endDate
+      - bookingStatus
+      - total
+      - carId
+      - carData
+      - userId
+      - pickupLocationId
+      - pickupLocation
+      - dropOffLocationId
+      - dropOffLocation
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        startDate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        endDate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        lastUpdate:
+          $ref: '#/components/schemas/ZonedDateTime'
         bookingStatus:
           $ref: '#/components/schemas/BookingStatus'
         total:
           format: float
           type: number
-        rating:
-          $ref: '#/components/schemas/Rating'
-        car:
-          $ref: '#/components/schemas/Car'
-        user:
-          $ref: '#/components/schemas/User'
+        ratingId:
+          format: int64
+          type: integer
+        ratingData:
+          $ref: '#/components/schemas/RatingData'
+        carId:
+          format: int64
+          type: integer
+        carData:
+          $ref: '#/components/schemas/CarData'
+        userId:
+          format: int64
+          type: integer
+        pickupLocationId:
+          format: int64
+          type: integer
+        pickupLocation:
+          $ref: '#/components/schemas/Location'
+        dropOffLocationId:
+          format: int64
+          type: integer
+        dropOffLocation:
+          $ref: '#/components/schemas/Location'
     BookingStatus:
       enum:
-        - PENDING
-        - ACTIVE
-        - COMPLETED
-        - CANCELED
+      - PENDING
+      - ACTIVE
+      - COMPLETED
+      - CANCELED
       type: string
     Brand:
       enum:
-        - ALFA_ROMEO
-        - AUDI
-        - BMW
-        - BUGATTI
-        - FERRARI
-        - FIAT
-        - FORD
-        - MERCEDES_BENZ
-        - TOYOTA
-        - VOLKSWAGEN
+      - ALFA_ROMEO
+      - AUDI
+      - BMW
+      - BUGATTI
+      - FERRARI
+      - FIAT
+      - FORD
+      - MERCEDES_BENZ
+      - TOYOTA
+      - VOLKSWAGEN
       type: string
+    Business:
+      required:
+      - name
+      - phone
+      - email
+      - createdAt
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        lastUpdate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        website:
+          pattern: "^(https?|ftp)://[^\\s/$.?#].\\S*$"
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+        imageUrl:
+          type: string
+        imagePublicId:
+          type: string
+    BusinessRequest:
+      type: object
+      properties:
+        business:
+          $ref: '#/components/schemas/Business'
+        subscription:
+          $ref: '#/components/schemas/Subscription'
     Car:
       required:
-        - model
-        - brand
-        - engine
-        - fuelType
-        - doors
-        - color
-        - transmission
-        - seats
-        - year
-        - licencePlate
-        - price
+      - model
+      - brand
+      - engine
+      - fuelType
+      - doors
+      - color
+      - transmission
+      - mileage
+      - insurance
+      - seats
+      - minimumDays
+      - maximumDays
+      - babySeats
+      - year
+      - licencePlate
+      - price
+      - createdAt
+      - luggage
+      - businessId
       type: object
       properties:
         id:
@@ -598,12 +3020,33 @@ components:
           $ref: '#/components/schemas/FuelType'
         doors:
           format: int32
+          maximum: 10
+          minimum: 1
           type: integer
         color:
           $ref: '#/components/schemas/Color'
         transmission:
           $ref: '#/components/schemas/Transmission'
+        mileage:
+          $ref: '#/components/schemas/Mileage'
+        insurance:
+          $ref: '#/components/schemas/Insurance'
         seats:
+          format: int32
+          maximum: 20
+          minimum: 1
+          type: integer
+        minimumDays:
+          format: int32
+          maximum: 365
+          minimum: 1
+          type: integer
+        maximumDays:
+          format: int32
+          maximum: 365
+          minimum: 1
+          type: integer
+        babySeats:
           format: int32
           type: integer
         year:
@@ -613,6 +3056,8 @@ components:
           type: string
         price:
           format: double
+          maximum: 50000
+          minimum: 0
           type: number
         averageRating:
           format: double
@@ -620,29 +3065,247 @@ components:
         reviewsCount:
           format: int32
           type: integer
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        lastUpdate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        luggage:
+          format: int32
+          maximum: 10
+          minimum: 0
+          type: integer
+        options:
+          type: string
+        imageUrl:
+          type: string
+        imagePublicId:
+          type: string
+        businessId:
+          format: int64
+          type: integer
+        carLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarLocation'
+    CarData:
+      required:
+      - id
+      - name
+      - price
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        imageUrl:
+          type: string
+        price:
+          format: double
+          type: number
+    CarImage:
+      required:
+      - url
+      - publicId
+      - createdAt
+      - carId
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        url:
+          type: string
+        publicId:
+          type: string
+        createdAt:
+          $ref: '#/components/schemas/Date'
+        lastUpdate:
+          $ref: '#/components/schemas/Date'
+        carId:
+          format: int64
+          type: integer
+    CarLocation:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        carId:
+          format: int64
+          type: integer
+        locationId:
+          format: int64
+          type: integer
+    City:
+      enum:
+      - TIRANE
+      - DURRES
+      - VLORE
+      - FIER
+      - PRISHTINE
+      type: string
     Color:
       enum:
-        - BEIGE
-        - BLACK
-        - CHROME
-        - GRAY
-        - GREEN
-        - RED
-        - YELLOW
-        - WHITE
+      - BEIGE
+      - BLACK
+      - BLUE
+      - CHROME
+      - GRAY
+      - GREEN
+      - RED
+      - YELLOW
+      - WHITE
       type: string
     Date:
       format: date
       type: string
       example: 2022-03-10
+    DateRange:
+      type: object
+      properties:
+        startDate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        endDate:
+          $ref: '#/components/schemas/ZonedDateTime'
+    DeleteRequest:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+    EmailConfirmationRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        code:
+          type: string
+    FavouriteBusiness:
+      required:
+      - business
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        businessId:
+          format: int64
+          type: integer
+        business:
+          $ref: '#/components/schemas/Business'
+        userId:
+          format: int64
+          type: integer
+    FavouriteCar:
+      required:
+      - car
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        carId:
+          format: int64
+          type: integer
+        car:
+          $ref: '#/components/schemas/Car'
+        userId:
+          format: int64
+          type: integer
     FuelType:
       enum:
-        - ELECTRIC
-        - GAS
-        - GASOLINE
-        - GASOLINE_GAS
-        - PETROL
+      - ELECTRIC
+      - GAS
+      - GASOLINE
+      - GASOLINE_GAS
+      - PETROL
       type: string
+    GoogleLoginRequest:
+      required:
+      - name
+      - lastName
+      - accessToken
+      type: object
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        accessToken:
+          type: string
+    IdListRequest:
+      type: object
+      properties:
+        idList:
+          type: array
+          items:
+            format: int64
+            type: integer
+    IdRequest:
+      type: object
+      properties:
+        userId:
+          format: int64
+          type: integer
+    Insurance:
+      enum:
+      - ALBSIG
+      - ATLANTIK
+      - EUROSIG
+      - INSIG
+      type: string
+    Location:
+      required:
+      - isPickup
+      - isDropOff
+      - isCarsLocation
+      - address
+      - city
+      - state
+      - zipCode
+      - latitude
+      - longitude
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        isPickup:
+          type: boolean
+        isDropOff:
+          type: boolean
+        isCarsLocation:
+          type: boolean
+        address:
+          type: string
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zipCode:
+          pattern: "^[0-9]{5}$"
+          type: string
+        latitude:
+          format: float
+          maximum: 90
+          minimum: -90
+          type: number
+        longitude:
+          format: float
+          maximum: 180
+          minimum: -180
+          type: number
+        businessId:
+          format: int64
+          type: integer
+        pickup:
+          type: boolean
+        dropOff:
+          type: boolean
+        carsLocation:
+          type: boolean
     LoginRequest:
       type: object
       properties:
@@ -653,14 +3316,71 @@ components:
     LoginResponse:
       type: object
       properties:
-        token:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+    Mileage:
+      enum:
+      - KM_0
+      - KM_100
+      - KM_200
+      - KM_MORE
+      type: string
+    NotificationType:
+      enum:
+      - BOOKING
+      - RATING
+      type: string
+    NotificationTypeRequest:
+      type: object
+      properties:
+        userId:
+          format: int64
+          type: integer
+        notificationType:
+          $ref: '#/components/schemas/NotificationType'
+    PasswordChangeRequest:
+      type: object
+      properties:
+        userId:
+          format: int64
+          type: integer
+        password:
+          type: string
+        newPassword:
           type: string
     Rating:
       required:
-        - rating
-        - timeStamp
-        - car
-        - user
+      - rating
+      - createdAt
+      - car
+      - user
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        rating:
+          format: int32
+          maximum: 5
+          minimum: 0
+          type: integer
+        comment:
+          type: string
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        carId:
+          format: int64
+          type: integer
+        car:
+          $ref: '#/components/schemas/Car'
+        userId:
+          format: int64
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+    RatingData:
       type: object
       properties:
         id:
@@ -671,21 +3391,92 @@ components:
           type: integer
         comment:
           type: string
-        timeStamp:
-          $ref: '#/components/schemas/Date'
-        car:
-          $ref: '#/components/schemas/Car'
-        user:
-          $ref: '#/components/schemas/User'
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        carId:
+          format: int64
+          type: integer
+        userFirstName:
+          type: string
+        userLastName:
+          type: string
+        userProfilePhoto:
+          type: string
+    ReadRequest:
+      type: object
+      properties:
+        notificationId:
+          format: int64
+          type: integer
+        read:
+          type: boolean
+    RefreshRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
     Role:
       enum:
-        - ADMIN
-        - USER
+      - ADMIN
+      - BUSINESS
+      - USER
       type: string
+    State:
+      enum:
+      - ALBANIA
+      - KOSOVO
+      type: string
+    Status:
+      enum:
+      - ACTIVE
+      - PENDING
+      type: string
+    Subscription:
+      required:
+      - payment
+      - subscription
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        businessId:
+          format: int64
+          type: integer
+        payment:
+          format: int32
+          type: integer
+        subscription:
+          $ref: '#/components/schemas/SubscriptionType'
+        carsCount:
+          format: int32
+          type: integer
+    SubscriptionType:
+      enum:
+      - BASIC
+      - STANDARD
+      - PREMIUM
+      type: string
+    TermsAndConditions:
+      required:
+      - version
+      - content
+      - createdAt
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        version:
+          type: string
+        content:
+          type: string
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
     Transmission:
       enum:
-        - MANUAL
-        - AUTOMATIC
+      - MANUAL
+      - AUTOMATIC
       type: string
     User:
       type: object
@@ -702,11 +3493,114 @@ components:
         phone:
           type: string
         username:
+          pattern: "^[a-zA-Z0-9._]+$"
           type: string
         password:
           type: string
+        googleLogin:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/Status'
+        darkMode:
+          type: boolean
+        imageUrl:
+          type: string
+        imagePublicId:
+          type: string
         role:
           $ref: '#/components/schemas/Role'
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        lastUpdate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        businessId:
+          format: int64
+          type: integer
+    UserAgreement:
+      required:
+      - acceptedVersion
+      - acceptedAt
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        acceptedVersion:
+          type: string
+        acceptedAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        userId:
+          format: int64
+          type: integer
+    UserData:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        darkMode:
+          type: boolean
+        googleLogin:
+          type: boolean
+        username:
+          type: string
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+        lastUpdate:
+          $ref: '#/components/schemas/ZonedDateTime'
+        imageUrl:
+          type: string
+        imagePublicId:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        businessId:
+          format: int64
+          type: integer
+    UserNotification:
+      required:
+      - notificationType
+      - title
+      - message
+      - read
+      - userId
+      - objectId
+      - createdAt
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        notificationType:
+          $ref: '#/components/schemas/NotificationType'
+        title:
+          type: string
+        message:
+          type: string
+        read:
+          type: boolean
+        userId:
+          format: int32
+          type: integer
+        objectId:
+          format: int32
+          type: integer
+        createdAt:
+          $ref: '#/components/schemas/ZonedDateTime'
+    ZonedDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00
   securitySchemes:
     SecurityScheme:
       type: http
